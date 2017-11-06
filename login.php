@@ -12,7 +12,7 @@ $body = <<<EOBODY
 
 	<script src="login.js"></script>
 	<p>
-	<form action="homepage.php" method="post">
+	<form action="upload.php" method="post">
 		<h1><strong>MusicShare </strong></h1><br />
 		<h2><strong>Login </strong></h2><br />
 		<strong>Username: </strong><input type="text" name="username" required/><br />
