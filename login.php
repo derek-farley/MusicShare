@@ -9,12 +9,8 @@ $hashedpwd = password_hash($password, PASSWORD_DEFAULT);
 $hasheduser=password_hash($user,PASSWORD_DEFAULT);
 
 $body = <<<EOBODY
-	 <head>
-        <meta charset="utf-8" />
-		<title>Login Page</title>
-		<script src="login.js"></script>
-	</head>
-	<body>
+
+	<script src="login.js"></script>
 	<p>
 	<form action="homepage.php" method="post">
 		<h1><strong>MusicShare </strong></h1><br />
@@ -31,7 +27,7 @@ $body = <<<EOBODY
 		<input type="submit" value="Sign Up" name="Signupbutton" /><br />
 	</form>
 	</p>
-	</body>
+	
 EOBODY;
 
 $page = generatePage($body);

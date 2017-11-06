@@ -1,10 +1,8 @@
 window.onsubmit=validate;
 
-/* This function must return true or false */
-/* If true the data will be sent to the server */
-/* If false the data will not be sent to the server */
+
 function validate() {
-	var pwd = document.getElementById("newpwd").value;
+	var pwd = document.getElementById("new_pwd").value;
     var veripwd = document.getElementById("verify_pwd").value;
 
     var invalidMess = "";
