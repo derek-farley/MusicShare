@@ -1,26 +1,28 @@
 window.onsubmit=validate;
 
-/* This function must return true or false */
-/* If true the data will be sent to the server */
-/* If false the data will not be sent to the server */
+
 function validate() {
-	var pwd = document.getElementById("pwd").value;
-    var veripwd = document.getElementById("veri_pwd").value;
+	var username = document.getElementById("username").value;
+    var pwd = document.getElementById("pwd").value;
 
     var invalidMess = "";
-    if(pwd!==veripwd){
-    	invalidMess="Password doesn't match";
+    if(username.length<5){
+    	invalidMess="Incorrect username: not enough characters.";
+    }
+
+		if(pwd.length<8){
+    	invalidMess="Incorrect password: not enough characters.";
     }
 
     if (invalidMessages !== "") {
         alert(invalidMessages);
         return false;
     } else {
-        var valuesProvided = "Do you want to submit the form data";
-        
+        var valuesProvided = "Is the information entered correct?";
+
         if (window.confirm(valuesProvided))
             return true;
-        else    
+        else
             return false;
     }
 }
