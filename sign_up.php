@@ -10,6 +10,7 @@ $body = <<<EOBODY
 		<strong>Create Username: </strong><input type="text" name="new_username" required/><br />
 		<strong>Create Password: </strong><input type="text" id="new_pwd" name="new_pwd" required/><br />
 		<strong>Verify Password: </strong><input type="text" id="verify_pwd" name="verify_pwd" required/><br />
+		<input type="submit" value="Create new Membership" name="submit_sign_up" />
 	</form>
 
 EOBODY;
