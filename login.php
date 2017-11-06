@@ -9,23 +9,28 @@ $hashedpwd = password_hash($password, PASSWORD_DEFAULT);
 $hasheduser=password_hash($user,PASSWORD_DEFAULT);
 
 $body = <<<EOBODY
-	 <head> 
-        <meta charset="utf-8" /> 
-		<title>Research Form</title>	
+	 <head>
+        <meta charset="utf-8" />
+		<title>Login Page</title>
 		<script src="login.js"></script>
 	</head>
 	<body>
-	<form action="displayApp.php" method="post">
+	<p>
+	<form action="homepage.php" method="post">
 		<h1><strong>MusicShare </strong></h1><br />
 		<h2><strong>Login </strong></h2><br />
-		<strong>Username: </strong><input type="text" name="username" /><br />
-		<strong>Password: </strong><input type="text" name="pwd" /><br />
+		<strong>Username: </strong><input type="text" name="username" required/><br />
+		<strong>Password: </strong><input type="text" name="pwd" required/><br />
 		<input type="submit" value="Login" name="loginbutton" /><br />
-		<h2><strong>Not a member? Sign up now!</strong></h2><br />
-		<strong>Create Username: </strong><input type="text" name="username" /><br />
-		<strong>Create Password: </strong><input type="text" id="pwd" name="pwd" /><br />
-		<strong>Verify Password: </strong><input type="text" id="verify_pwd" name="pwd" /><br />
 	</form>
+	</p>
+
+	<p>
+	<h2><strong>Not a member? Sign up now!</strong></h2><br />
+	<form action="sign_up.php" method="post">
+		<input type="submit" value="Sign Up" name="Signupbutton" /><br />
+	</form>
+	</p>
 	</body>
 EOBODY;
 
