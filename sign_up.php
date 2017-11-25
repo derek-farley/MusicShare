@@ -4,10 +4,10 @@
 
 $body = <<<EOBODY
 	<script src="signup.js"></script>
-	<form action="upload.php" method="post">
+	<form action="timeline.php" method="post">
 		<h1><strong>MusicShare </strong></h1><br />
 		<h2><strong>Sign up as a New Member</strong></h2><br />
-		<strong>Create Username: </strong><input type="text" name="new_username" required/><br />
+		<strong>Create Username: </strong><input type="text" id="new_username" name="new_username" required/><br />
 		<strong>Create Password: </strong><input type="text" id="new_pwd" name="new_pwd" required/><br />
 		<strong>Verify Password: </strong><input type="text" id="verify_pwd" name="verify_pwd" required/><br />
 		<input type="submit" value="Create new Membership" name="submit_sign_up" />
