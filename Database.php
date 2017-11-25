@@ -19,7 +19,12 @@
     }
 
     public function connect() {
-      
+      $db = mysqli_connect(this->db_host, this->db_user, this->db_password, this->database);
+      if (mysqli_connect_errno()) {
+        echo "Connect failed.\n".mysqli_connect_error();
+        exit();
+      }
+      return $db;
     }
   }
 ?>
