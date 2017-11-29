@@ -1,17 +1,10 @@
 <?php
 	require_once("support.php");
-	require_once("Database.php");
+	require_once "meekrodb.2.3.class.php";
 
 	#this is to be the Main Page of the website, once logged in. This should display the user's timeline. Still a draft.
 
-	$host = "localhost";
-	$user = "dbuser";
-	$password = "goodbyeWorld";
-	$database = "musicshare";
-	$table = "users";
-	$db= new Database($host, $user, $password, $database);
-	$db_connected = db->connect($host, $user, $password, $database);
-
+	dbConfig();
 	$top = "<h1><strong>Your MusicShare Timeline</strong></h1>,br /><br />";
 
 	#if Logging in to existing user, pull records and display on timeline
