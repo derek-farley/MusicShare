@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2017 at 11:06 PM
+-- Generation Time: Nov 30, 2017 at 01:37 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -70,8 +70,15 @@ CREATE TABLE `posts` (
 
 CREATE TABLE `users` (
   `username` varchar(30) NOT NULL,
-  `password` varchar(30) NOT NULL
+  `password` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`username`, `password`) VALUES
+('derek', '$2y$10$45nitMgxGZl7NKWCfDV7f.NsABkrxRfRdriMMj5P6yZW5NyeR0yvq');
 
 --
 -- Indexes for dumped tables

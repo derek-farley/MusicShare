@@ -14,8 +14,8 @@
 	/*
 	 * loops thru Constants folder including all files for use in db ops
 	 */
-	function includeConstants() {
-		foreach(glob('Constants/*.php') as $filename) {
+	function includeConstants($relativepath = "") {
+		foreach(glob($relativepath."Constants/*.php") as $filename) {
 			require_once $filename;
 		}
 	}
