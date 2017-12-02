@@ -1,0 +1,22 @@
+body {
+    background-color: #F8F8FF;
+}
+h1 {
+  
+  background: -webkit-linear-gradient(blue 70%,red 30% );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+h2{
+  
+  background: -webkit-linear-gradient(blue 70%,black 30% );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+.button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    }
