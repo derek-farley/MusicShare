@@ -9,35 +9,34 @@
 
   class Post {
     private string $owner;
-    private string $image
+    private string $song_url;
     private int $likes=0;
     private int $reposts=0;
     private string $artist;
     private string $album;
-    private string $filepath;
+    private string $image;
     private static int $id=0;
     private string $timestamp
 
 
-    public function __construct(string $owner, string $image, string $artist, string $album, string $filepath) {
+    public function __construct(string $owner, string $artist, string $album, string $song_url, string $imagefilepath) {
         $this->owner=$owner;
-        $this->image=$image;
+        $this->song_url=$song_url;
         $this->artist=$artist;
         $this->album=$album;
-        $this->filepath=$filepath;
+        $this->image=file_get_contents($imagefilepath);
         $this->id++;
         $this->timestamp=date("h:i:sa");
     }
 
     public function __toString() {
-      return "owner: ".$this->owner."message: ".$this->message." # of likes: ".$this->likes." # of reposts: ".$this->reposts." filepath: ".$this->filepath."";
-
+      return "owner: ".$this->owner."song_url: ".$this->song_url." # of likes: ".$this->likes." # of reposts: ".$this->reposts."";
     }
 
     public function displayPost() {
       $display= "<table><tr><th>".$this->owner."</th></tr><tr><td>".$this->image."</td></tr>
       <tr><td> artist: ".$this->artist.", album; ".$this->album."</td></tr>
-      <tr><td> Music link: <a href=\"".$this->filepath."\">".$this->filepath."</a></td></tr>
+      <tr><td> Music link: <a href=\"".$this->song_url."\">".$this->song_url."</a></td></tr>
       <tr><td> Likes: ".$this->likes."</td></tr><tr><td> Reposts: ".$this->reposts."</td></tr></table>
       <form method=\"post\">
       <input type=\"submit\" name=\"likeButton\" value=\"Like\" /><br/>

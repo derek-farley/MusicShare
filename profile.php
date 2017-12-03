@@ -9,6 +9,8 @@
 
     $top = "<h1><strong>Your Profile</strong></h1>,br /><br />";
 
+    #create shortcuts to Timeline feed, search query bar for friends, loggin out?
+
 
     #select post_ids from LikeRePostTable where username==currentuser and isLike==0
     #select * from PostsTable where owner==currentuser OR post_ids.contain(post_id)
