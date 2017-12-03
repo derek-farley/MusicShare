@@ -35,20 +35,34 @@
     }
 
     public function displayPost() {
-      return "<table><tr><th>".$this->owner."</th></tr><tr><td>".$this->image."</td></tr>
+      $display= "<table><tr><th>".$this->owner."</th></tr><tr><td>".$this->image."</td></tr>
       <tr><td> artist: ".$this->artist.", album; ".$this->album."</td></tr>
       <tr><td> Music link: <a href=\"".$this->filepath."\">".$this->filepath."</a></td></tr>
-      <tr><td> Likes: ".$this->likes."</td></tr><tr><td> Reposts: ".$this->reposts."</td></tr></table>";
-              //input buttons for likes and reposts, buttons call increment functions
+      <tr><td> Likes: ".$this->likes."</td></tr><tr><td> Reposts: ".$this->reposts."</td></tr></table>
+      <form method=\"post\">
+      <input type=\"submit\" name=\"likeButton\" value=\"Like\" /><br/>
+      <input type=\"submit\" name=\"repostButton\" value=\"Repost\" /><br/>
+      </form>";
 
+      if(array_key_exists('likeButton',$_POST)){
+        incrementLikes();
+      }
+
+      if(array_key_exists('repostButton',$_POST)){
+        incrementReposts();
+      }
+
+      return $display;
     }
 
     public function incrementLikes(){
       $this->likes++;
+      //somehow add post and the liking user to LikeRepostTable
     }
 
     public function incrementReposts(){
       $this->reposts++;
+      //somehow add post and Reposting user to LikeRepostTable
     }
 
     public function addPostToDb() {
