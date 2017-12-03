@@ -13,4 +13,5 @@ class PostsTable {
     const REPOSTS_FIELD = "reposts"; # number of reposts on the post
     const OWNER_FIELD = "owner"; # user that made the post
     const ALBUMART_FIELD = "albumart"; # blob (binary data) image of the album art
+    const URL_FIELD = "url";
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 30, 2017 at 01:37 AM
+-- Generation Time: Dec 04, 2017 at 12:43 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -59,7 +59,8 @@ CREATE TABLE `posts` (
   `likes` int(10) UNSIGNED NOT NULL,
   `reposts` int(10) UNSIGNED NOT NULL,
   `owner` varchar(30) NOT NULL,
-  `albumart` longblob NOT NULL
+  `albumart` longblob NOT NULL,
+  `url` varchar(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

@@ -1,22 +1,22 @@
 <?php
+  declare(strict_types=1);
   require_once "../support.php";
   require_once "../meekrodb.2.3.class.php";
-  declare(strict_types=1);
 
   /**
   * Object representing posts of shared music by Users
   */
 
   class Post {
-    private string $owner;
-    private string $song_url;
-    private int $likes=0;
-    private int $reposts=0;
-    private string $artist;
-    private string $album;
-    private string $image;
-    private static int $id=0;
-    private string $timestamp
+    private $owner; #string
+    private $song_url; #string
+    private $likes=0; #int
+    private $reposts=0; #int
+    private $artist; #string
+    private $album; #string
+    private $image; #string
+    private static $id=0; #int
+    private $timestamp; # string
 
 
     public function __construct(string $owner, string $artist, string $album, string $song_url, string $imagefilepath) {
