@@ -6,7 +6,7 @@
 
 class DatabaseConfig {
     const HOST = "localhost";
-    const PASSWORD = "iaSNLlykb9UBFXS2";
+    const PASSWORD = "some_pass";
     const DATABASE = "musicshare";
-    const USER = "dbuser";
+    const USER = "francesco";
 }
