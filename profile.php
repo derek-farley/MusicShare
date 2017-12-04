@@ -20,7 +20,7 @@ includeConstants();
 dbConfig();
 session_start(); # initialize session to pull and push variables
 
- if (isset($_POST['searchedFriend']))
+if (isset($_POST['searchedFriend']))
 {
     $viewing = new User($_POST['searchedFriend']);
     $viewing = $viewing->getUsername();
@@ -32,24 +32,34 @@ else
 }
 ?>
 <div class="fixedHeader">
-    <div class="col-xs-3 col-md-3">
+    <div class="col-xs-4 col-md-4">
         <br>
-        <form action="timeline.php">
-            <input type="submit" name="timelineButton" value="Timeline" class="btn btn-primary button"/>
-        </form>
-    </div>
-    <div class="col-xs-6 col-md-6">
-        <h1 class="headers" align="center"><?php if(!isset($_POST['searchedFriend'])) echo $user; else
-        echo $viewing;?>'s Profile</h1>
-    </div>
-    <div class="col-xs-3 col-md-3">
-        <br>
-        <span style="float:left;">
-            <input type="submit" name="createPost" value="New Post" class="btn btn-primary button"/>
+        <span style="float: left;">
+            <form action="timeline.php">
+                <input type="submit" name="timelineButton" value="Timeline" class="btn btn-primary button"/>&emsp;&emsp;
+            </form>
         </span>
-        <span style="float:right;">
-            <form action = "profile.php" method="POST" align="center">
-            <br><br>
+        <?php
+            if (isset($_POST["searchedFriend"])) {
+                echo "<span style='float: left;'><form action='profile.php'>
+                        <input type=\"submit\" name=\"profileButton\" value=\"Profile\" class=\"btn btn-primary button\"/>
+                        </form>
+                        </span>";
+            }
+        ?>
+    </div>
+    <div class="col-xs-4 col-md-4">
+        <h1 class="headers" align="center"><?php if(!isset($_POST['searchedFriend'])) echo $user; else
+                echo $viewing;?>'s Profile</h1>
+    </div>
+    <div class="col-xs-4 col-md-4">
+        <br>
+        <span style="float: left;">
+            <input type="submit" name="createPost" value="New Post" class="btn btn-primary button" align="center"/>
+            &nbsp;&nbsp;&nbsp;
+        </span>
+        <span style="float:left;">
+            <form action = "profile.php" method="POST">
             <i class="glyphicon glyphicon-search"></i>
             <input type="text" placeholder="Search..." name="searchBar"/>
             <input type="submit" name="submitSearch" value="go">
@@ -58,14 +68,14 @@ else
     </div>
 </div>
 <div class="container" id="container1">
-        <?php
-        if (!isset($_POST['searchBar']) && !isset($_POST['searchedFriend']))
-        {
-            
-        }
-        else if (isset($_POST['searchBar']))
-        {
-            $table = <<<EOD
+    <?php
+    if (!isset($_POST['searchBar']) && !isset($_POST['searchedFriend']))
+    {
+
+    }
+    else if (isset($_POST['searchBar']))
+    {
+        $table = <<<EOD
     <table class="table table-sm table-inverse">
   <thead>
     <tr>
@@ -76,30 +86,30 @@ else
 EOD;
 
 
-            $search = $_POST['searchBar'];
-            $sQuery = $userposts=DB::query("SELECT ".UserTable::USERNAME_FIELD." FROM ".UserTable::TABLE_NAME." WHERE ".UserTable::USERNAME_FIELD." LIKE ".'\'%'.$search.'%\'');
-            for($i = 0; $i < count($sQuery); $i++)
-            {
-                $ix =  $sQuery[$i]['username'];
-                $table .= '<form method="post" action="profile.php">';
-                $table .= '<input type="hidden" name="searchedFriend" value="'.$ix.'" >';
-                $table .= "<tr><td>".'<input type="submit" class="submitLink" value="'.$ix.'"></td></tr></form>';
-            }
-      
-            $table .= <<<EOD
+        $search = $_POST['searchBar'];
+        $sQuery = $userposts=DB::query("SELECT ".UserTable::USERNAME_FIELD." FROM ".UserTable::TABLE_NAME." WHERE ".UserTable::USERNAME_FIELD." LIKE ".'\'%'.$search.'%\'');
+        for($i = 0; $i < count($sQuery); $i++)
+        {
+            $ix =  $sQuery[$i]['username'];
+            $table .= '<form method="post" action="profile.php">';
+            $table .= '<input type="hidden" name="searchedFriend" value="'.$ix.'" >';
+            $table .= "<tr><td>".'<input type="submit" class="submitLink" value="'.$ix.'"></td></tr></form>';
+        }
+
+        $table .= <<<EOD
   </tbody>
 </table>
 EOD;
-    echo $table;
+        echo $table;
     }
-?>
+    ?>
 </div>
 <div class="container">
     <div class="col-xs-3 col-md-3">
     </div>
     <div class="col-xs-6 col-md-6 whiteColumn" style="border-radius: 10px">
         <?php
-        if (isset($_POST['searchedFriend'])) 
+        if (isset($_POST['searchedFriend']))
         {
             $userposts = DB::query("SELECT * FROM ".PostsTable::TABLE_NAME . " where " . PostsTable::OWNER_FIELD . " = %s",
                 $viewing);
@@ -114,8 +124,8 @@ EOD;
                 }
             }
         }
-            else 
-            {
+        else
+        {
             $userposts = DB::query("SELECT * FROM ".PostsTable::TABLE_NAME . " where " . PostsTable::OWNER_FIELD . " = %s",
                 $user);
             if (count($userposts) === 0) {

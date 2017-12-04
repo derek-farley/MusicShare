@@ -15,7 +15,7 @@ echo "updating db";
 switch ($_GET["operation"]) {
     case "like" :
         insertDeleteLikeRepost($user->getUsername(), $postid, 1, true);
-        updatePostsTable($newValue, $postid);
+        updatePostsTable($newValue, $postid, true);
         break;
     case "unlike" :
         insertDeleteLikeRepost($user->getUsername(), $postid, 1, false);
@@ -25,22 +25,33 @@ switch ($_GET["operation"]) {
             $user->getUsername(),
             $postid,
             1);
-        updatePostsTable($newValue, $postid);
+        updatePostsTable($newValue, $postid, true);
         break;
     case "repost" :
         insertDeleteLikeRepost($user->getUsername(), $postid, 0, true);
-        updatePostsTable($newValue, $postid);
+        updatePostsTable($newValue, $postid, false);
         break;
     case "unrepost" :
         insertDeleteLikeRepost($user->getUsername(), $postid, 0, false);
-        updatePostsTable($newValue, $postid);
+        updatePostsTable($newValue, $postid, false);
+        break;
+    case "follow" :
+        break;
+    case "unfollow" :
         break;
 }
 
-function updatePostsTable($newValue, $postid) {
-    DB::update(PostsTable::TABLE_NAME, array(
-        PostsTable::LIKES_FIELD => $newValue
-    ), PostsTable::POST_ID_FIELD." = %d", $postid);
+function updatePostsTable($newValue, $postid, $isLike) {
+    if ($isLike) {
+        DB::update(PostsTable::TABLE_NAME, array(
+            PostsTable::LIKES_FIELD => $newValue
+        ), PostsTable::POST_ID_FIELD . " = %d", $postid);
+    }
+    else {
+        DB::update(PostsTable::TABLE_NAME, array(
+            PostsTable::REPOSTS_FIELD => $newValue
+        ), PostsTable::POST_ID_FIELD . " = %d", $postid);
+    }
 }
 
 function insertDeleteLikeRepost($username, $postid, $isLike, $isInsert) {

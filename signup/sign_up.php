@@ -64,7 +64,7 @@
 				<input type="submit" class="btn btn-primary button" value="Create new Membership" name="submit_sign_up"/>
 			</form> <br/>
 		</div>
-		<div id = "errorText"></div>
+		<div id = "errorText" align="center"></div>
        	<script src="../bootstrap/jquery-3.2.1.min.js"></script>
         <script src="../bootstrap/js/bootstrap.min.js"></script>
         </body>
