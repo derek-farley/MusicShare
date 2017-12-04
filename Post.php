@@ -60,7 +60,7 @@ class Post {
         return DB::queryFirstField("Select MAX(".PostsTable::POST_ID_FIELD.") from ".PostsTable::TABLE_NAME.";") + 1;
     }
 
-    public function displayPost() {
+    public function displayPost($user) {
       $repostMessage = "";
       if ($this->isRepost) {
         $repostMessage = "&nbsp <i class=\"glyphicon glyphicon-refresh\"></i> by <strong>$this->reposter</strong>";
@@ -94,15 +94,32 @@ class Post {
                 <form align="center">
                 <input type="hidden" name="post_id" value="$this->post_id"/>
                     <strong>Likes:</strong> <span id="$this->post_id likes">$this->likes</span> <i class="glyphicon glyphicon-thumbs-up"></i>
-                    <input type="button" id="$this->post_id likeButton" name="like Button" 
-                    value="Like" class="btn btn-default button" onclick="incrementLikes(this.form);"/>
-                </form>
-                <form align="center">
-                    <input type="hidden" name="post_id" value="$this->post_id"/>
-                    <strong>Reposts:</strong> <span id="$this->post_id reposts">$this->reposts</span> <i class="glyphicon glyphicon-refresh"></i>
-                    <input type="button" id="$this->post_id repostButton" name="repostButton" value="Repost" 
-                    class="btn btn-default button" onclick="incrementReposts(this.form);"/>
-                </form>
+EOBODY;
+      if ($user->likesPost($this->post_id)) {
+          $display = $display."<input type=\"button\" id=\"$this->post_id likeButton\" name=\"like Button\" 
+                    style='background-color: PaleVioletRed;' value=\"Unlike\" class=\"btn btn-default button\" onclick=\"decrementLikes(this.form);\"/>
+                </form>";
+      }
+      else {
+          $display = $display."<input type=\"button\" id=\"$this->post_id likeButton\" name=\"like Button\" 
+                            value=\"Like\" class=\"btn btn-default button\" onclick=\"incrementLikes(this.form);\"/>
+                            </form>";
+      }
+      $display = $display."<form align=\"center\">
+                    <input type=\"hidden\" name=\"post_id\" value=\"$this->post_id\"/>
+                    <strong>Reposts:</strong> <span id=\"$this->post_id reposts\">$this->reposts</span> <i class=\"glyphicon glyphicon-refresh\"></i>";
+      if ($user->didRepost($this->post_id)) {
+          $display = $display."<input type=\"button\" id=\"$this->post_id repostButton\" name=\"repostButton\" value=\"Unrepost\" 
+                    style='background-color: PaleVioletRed;' class=\"btn btn-default button\" onclick=\"decrementReposts(this.form);\"/>
+                </form>";
+      }
+      else {
+          $display = $display."<input type=\"button\" id=\"$this->post_id repostButton\" name=\"repostButton\" value=\"Repost\" 
+                    class=\"btn btn-default button\" onclick=\"incrementReposts(this.form);\"/>
+                </form>";
+      }
+
+      $bottom = <<<EOBODY
             </div>
         </div>
         <div class="panel-footer" align="center">
@@ -112,7 +129,7 @@ class Post {
 EOBODY;
 
 
-        return $display;
+        return $display.$bottom;
     }
 
     public function incrementLikes(){

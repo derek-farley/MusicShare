@@ -22,6 +22,7 @@ class User {
         $this->posts_array = $this->collectPosts();
         $this->reposts_array = $this->collectReposts(); #associative array to determine reposts in posts array
         $this->likes_array = $this->collectLikes();
+        $this->personal_reposts = $this->collectPersonalReposts();
     }
 
     public function __toString() {
@@ -70,7 +71,7 @@ class User {
     }
 
     public function addRepost($postid) {
-        $this->reposts_array[$postid] = array(LikeRepostTable::USERNAME_FIELD => $this->username,
+        $this->personal_reposts[$postid] = array(LikeRepostTable::USERNAME_FIELD => $this->username,
             LikeRepostTable::POST_ID_FIELD => $postid,
             LikeRepostTable::IS_LIKE_FIELD => 0);
     }
@@ -103,7 +104,8 @@ class User {
 
     public function collectReposts() : array {
       array_push($this->following_array, $this->username);
-      $results = DB::query("SELECT * from ".LikeRepostTable::TABLE_NAME." where username in %ls", $this->following_array);
+      $results = DB::query("SELECT * from ".LikeRepostTable::TABLE_NAME." where username in %ls and isLike = %d",
+          $this->following_array, 0);
       array_pop($this->following_array);
       $returnArray = [];
       foreach($results as $result) {
@@ -126,7 +128,15 @@ class User {
     function collectLikes() : array {
         $results = DB::query("SELECT * from ".LikeRepostTable::TABLE_NAME." where username = %s and isLike = %d",
             $this->username, 1);
-        return $results;
+        $returnArray = [];
+        foreach($results as $result) {
+            $returnArray[$result[LikeRepostTable::POST_ID_FIELD]] = $result;
+        }
+        return $returnArray;
+    }
+
+    function getLikes() : array {
+        return $this->likes_array;
     }
 
     public function addLike($postid) {
@@ -141,7 +151,24 @@ class User {
     }
 
     public function removeRepost($postid) {
-        unset($this->reposts_array[$postid]);
+        unset($this->personal_reposts[$postid]);
+    }
+
+    public function likesPost($postid) {
+        return array_key_exists($postid, $this->likes_array);
+    }
+
+    public function collectPersonalReposts() {
+        $results = DB::query("SELECT * from ".LikeRepostTable::TABLE_NAME." where username = %s and isLike = %d", $this->username, 0);
+        $returnArray = [];
+        foreach($results as $result) {
+            $returnArray[$result[LikeRepostTable::POST_ID_FIELD]] = $result;
+        }
+        return $returnArray;
+    }
+
+    public function didRepost($postid) {
+        return array_key_exists($postid, $this->personal_reposts);
     }
 }
 
