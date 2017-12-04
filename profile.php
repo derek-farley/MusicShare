@@ -20,6 +20,12 @@ includeConstants();
 dbConfig();
 session_start(); # initialize session to pull and push variables
 
+
+if (isset($_POST['submitPost'])){
+    $newpost= new Post($_SESSION['user'],$_POST['artist'],$_POST['album'],$_POST['song'],$_POST['image']);
+    $newpost.addPosttoDb();
+}
+
 if (isset($_POST['searchedFriend']))
 {
     $viewing = new User($_POST['searchedFriend']);
