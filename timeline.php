@@ -24,8 +24,10 @@
     <div class="col-xs-4 col-md-4">
         <br>
         <span style="float:left;">
-            <input type="submit" name="createPost" value="New Post" class="btn btn-primary button" align="center"/>
+        <form action="newpostphp" method="post">
+            <input type="submit" name="createPostfromtimeline" value="New Post" class="btn btn-primary button" align="center"/>
             &nbsp;&nbsp;&nbsp;
+        </form>
         </span>
         <span style="float:left;">
             <form action = "profile.php" method="POST" align="center">
