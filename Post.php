@@ -1,8 +1,8 @@
 <?php
   declare(strict_types=1);
-  require_once "../support.php";
-  require_once "../meekrodb.2.3.class.php";
-
+  require_once "support.php";
+  require_once "meekrodb.2.3.class.php";
+ 
   /**
   * Object representing posts of shared music by Users
   */
@@ -19,13 +19,13 @@
     private $timestamp; # string
 
 
-    public function __construct(string $owner, string $artist, string $album, string $song_url, string $imagefilepath) {
+    public function __construct(string $owner, string $artist, string $album, string $song_url, string $image) {
         $this->owner=$owner;
         $this->song_url=$song_url;
         $this->artist=$artist;
         $this->album=$album;
-        $this->image=file_get_contents($imagefilepath);
-        $this->id++;
+        $this->image=$image;
+        Post::$id++;
         $this->timestamp=date("h:i:sa");
     }
 
@@ -34,7 +34,7 @@
     }
 
     public function displayPost() {
-      $display= "<table><tr><th>".$this->owner."</th></tr><tr><td>".$this->image."</td></tr>
+      $display= "<table><tr><th>".$this->owner."</th></tr><tr><td>".'<img src="data:image/jpeg;base64,'.base64_encode($this->image).'"/>'."</td></tr>
       <tr><td> artist: ".$this->artist.", album; ".$this->album."</td></tr>
       <tr><td> Music link: <a href=\"".$this->song_url."\">".$this->song_url."</a></td></tr>
       <tr><td> Likes: ".$this->likes."</td></tr><tr><td> Reposts: ".$this->reposts."</td></tr></table>
