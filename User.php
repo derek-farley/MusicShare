@@ -37,6 +37,9 @@
       return $this->following_array;
     }
 
+    public function getPosts() : array {
+      return $this->posts_array;
+    }
     public function addFollower(User $user) {
       $this->follower_array[] = $user;
     }
@@ -52,8 +55,10 @@
     public function collectPosts() {
           array_push($this->following_array, $this->username);
           $results = DB::query(
-              "SELECT * from ".PostsTable::TABLE_NAME." where ".PostsTable::OWNER_FIELD." in %ls order by ".PostsTable::TIMESTAMP_FIELD,
-              $this->following_array);
+              "SELECT * from ".PostsTable::TABLE_NAME." join ".LikeRepostTable::TABLE_NAME." on ".
+              PostsTable::TABLE_NAME.".".PostsTable::POST_ID_FIELD." = ".LikeRepostTable::TABLE_NAME.".".LikeRepostTable::POST_ID_FIELD.
+              " where ".PostsTable::OWNER_FIELD." in %ls or ".LikeRepostTable::USERNAME_FIELD." in %ls order by ".PostsTable::TIMESTAMP_FIELD,
+              $this->following_array, $this->following_array);
           array_pop($this->following_array);
           return $results;
       }

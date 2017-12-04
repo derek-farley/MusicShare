@@ -33,22 +33,32 @@
       return "owner: ".$this->owner."song_url: ".$this->song_url." # of likes: ".$this->likes." # of reposts: ".$this->reposts."";
     }
 
+    public function getAlbumArt() {
+      return $this->image;
+    }
+
     public function displayPost() {
-      $display= "<table><tr><th>".$this->owner."</th></tr><tr><td>".'<img src="data:image/jpeg;base64,'.base64_encode($this->image).'"/>'."</td></tr>
-      <tr><td> artist: ".$this->artist.", album; ".$this->songalbum."</td></tr>
-      <tr><td> Music link: <a href=\"".$this->song_url."\">".$this->song_url."</a></td></tr>
-      <tr><td> Likes: ".$this->likes."</td></tr><tr><td> Reposts: ".$this->reposts."</td></tr></table>
-      <form method=\"post\">
-      <input type=\"submit\" name=\"likeButton\" value=\"Like\" /><br/>
-      <input type=\"submit\" name=\"repostButton\" value=\"Repost\" /><br/>
-      </form>";
+      $post_id = Post::$id;
+      $display= <<<EOBODY
+      <div class="panel panel-default">
+        <table><tr><th>$this->owner</th></tr><tr><td><img src="data:image/jpeg;base64,$this->image" height="50" width="50"/></td></tr>
+        <tr><td> artist: $this->artist, album: $this->songalbum</td></tr>
+        <tr><td> Music link: <a href=$this->song_url>$this->song_url</a></td></tr>
+        <tr><td> Likes: $this->likes."</td></tr><tr><td> Reposts: $this->reposts</td></tr></table>
+        <form method="post" >
+        <input type="submit" name="likeButton" value="Like" /><br/>
+        <input type="submit" name="repostButton" value="Repost" /><br/>
+        <input type="hidden" name="post_id" value=$post_id/>
+        </form>
+      </div>
+EOBODY;
 
       if(array_key_exists('likeButton',$_POST)){
-        incrementLikes();
+        $this->incrementLikes();
       }
 
       if(array_key_exists('repostButton',$_POST)){
-        incrementReposts();
+        $this->incrementReposts();
       }
 
       return $display;
@@ -68,7 +78,7 @@
       dbConfig();
       session_start();
       DB::insert(PostsTable::TABLE_NAME, array(
-           PostsTable::POST_ID_FIELD => $this->id,
+           PostsTable::POST_ID_FIELD => Post::$id,
            PostsTable::TIMESTAMP_FIELD =>$this->timestamp,
            PostsTable::SONGALBUM_FIELD => $this->songalbum,
             PostsTable::ARTIST_FIELD => $this->artist, 
@@ -79,6 +89,11 @@
             PostsTable::URL_FIELD =>$this->song_url,));
 
     }
+
+    public static function createPost($post_array) {
+      return new Post($post_array[PostsTable::OWNER_FIELD], $post_array[PostsTable::ARTIST_FIELD],
+          $post_array[PostsTable::SONGALBUM_FIELD], $post_array[PostsTable::URL_FIELD], $post_array[PostsTable::ALBUMART_FIELD]);
+  }
 
   }
 
