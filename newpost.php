@@ -29,8 +29,32 @@ if(isset($_POST["createPostfromprofile"])){
 
 
 $body=<<<EOBODY
-	<h1>Create New Post</h1><br />
-	<div>
+<div class="fixedHeader">
+    <div class="col-xs-4 col-md-4">
+        <br>
+        <span style="float: left;">
+            <form action="timeline.php">
+                <input type="submit" name="timelineButton" value="Timeline" class="btn btn-primary button"/>&emsp;&emsp;
+            </form>
+        </span>
+        <span style="float: left">
+            <form action="profile.php" method="POST">
+            <input type="submit" name="profileButton" value="Profile" class="btn btn-primary button"/>&emsp;&emsp;
+            </form>
+        </span>
+    </div>
+    <div class="col-xs-4 col-md-4">
+        <h1 class="headers" align="center">MusicShare</h1>
+    </div>
+    <div class="col-xs-4 col-md-4">
+    <br>
+            <form action="login.php" align="center">
+                <input type="submit" name="logoutButton" value="Logout" class="btn btn-primary button"/>&emsp;&emsp;
+            </form>
+    </div>
+</div>
+	<h1 align="center" class="headers">Create New Post</h1><br />
+	<div align="center">
 	<form action=$file method="post" enctype="multipart/form-data">
 		Artist Name : <input type="text" name="artist"/><br /><br />
 		Album Title : <input type="text" name="album"/><br /><br />

@@ -48,6 +48,7 @@ else
     $user = $userObject->getUsername();
 }
 ?>
+<script type="text/javascript" src="postScript.js"></script>
 <div class="fixedHeader">
     <div class="col-xs-4 col-md-4">
         <br>
@@ -73,6 +74,23 @@ else
     <div class="col-xs-4 col-md-4">
         <h1 class="headers" align="center"><?php if(!isset($_POST['searchedFriend'])) echo $user; else
                 echo $viewing;?>'s Profile</h1>
+        <form align="center">
+            <input type="hidden" id="following" name="following" value="<?php if(!isset($_POST['searchedFriend'])) echo $user; else
+                echo $viewing;?>"/>
+            <?php
+                if(isset($_POST['searchedFriend']) && $_SESSION["userObject"]->getUsername() !== $viewing) {
+                    if (!$_SESSION["userObject"]->isFollowing($viewing)) {
+                        echo "<input type=\"button\" name=\"followButton\" value=\"Follow\" id=\"followButton\" class=\"btn btn-primary button\"
+                        onclick=\"followUser(this.form)\"/>";
+                    }
+                    else {
+                        echo "<input type=\"button\" name=\"followButton\" value=\"Unfollow\" id=\"followButton\" class=\"btn btn-primary button\"
+                        style='background-color: PaleVioletRed;' onclick=\"unfollowUser(this.form)\"/>";
+                    }
+                }
+            ?>
+
+        </form>
     </div>
     <div class="col-xs-4 col-md-4">
         <br>
@@ -159,7 +177,7 @@ EOD;
 
         foreach ($userposts as $postarray) {
             $post = Post::createPost($postarray);
-            echo $post->displayPost();
+            echo $post->displayPost($_SESSION["userObject"]);
         }
 
         ?>

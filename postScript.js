@@ -67,14 +67,44 @@ function changeUnrepostButton(post_id) {
     document.getElementById(post_id + " repostButton").onclick = function() { incrementReposts(this.form)};
 }
 
+function followUser(form) {
+    console.log(form.elements.namedItem("following").value);
+    let followedUser = form.elements.namedItem("following").value;
+    changeFollowButton();
+    updateDatabase(null, "follow", followedUser);
+}
+
+function changeFollowButton() {
+    document.getElementById("followButton").value = "Unfollow";
+    document.getElementById("followButton").style.backgroundColor = "PaleVioletRed";
+    document.getElementById("followButton").onclick = function() { unfollowUser(this.form)};
+}
+
+function unfollowUser(form) {
+    console.log(form.elements.namedItem("following").value);
+    let unfollowedUser = form.elements.namedItem("following").value;
+    changeUnfollowButton();
+    updateDatabase(null, "unfollow", unfollowedUser);
+}
+
+function changeUnfollowButton() {
+    document.getElementById("followButton").value = "Follow";
+    document.getElementById("followButton").style.backgroundColor = "#4CAF50";
+    document.getElementById("followButton").onclick = function() { followUser(this.form)};
+}
+
 function updateDatabase(post_id, operation, newValue) {
     console.log("updating db");
     let requestObj = new XMLHttpRequest();
     let scriptURL = "updateDatabase.php";
 
-    scriptURL += "?postid=" + post_id;
-
-    scriptURL += "&operation=" + operation;
+    if (post_id !== null) {
+        scriptURL += "?postid=" + post_id;
+        scriptURL += "&operation=" + operation;
+    }
+    else {
+        scriptURL += "?operation=" + operation;
+    }
 
     scriptURL += "&newValue=" + newValue;
     /* adding random value to url to avoid cache */
