@@ -20,12 +20,15 @@ includeConstants();
 dbConfig();
 session_start(); # initialize session to pull and push variables
 
-if (isset($_POST["profileButton"])) {
+ if (isset($_POST['searchedFriend']))
+{
+    $viewing = new User($_POST['searchedFriend']);
+    $viewing = $viewing->getUsername();
+}
+else
+{
     $userObject = $_SESSION["userObject"]; #initialize user so header can be customized
     $user = $userObject->getUsername();
-}
-else {
-    $user = $_POST["searchBar"];
 }
 ?>
 <div class="fixedHeader">
@@ -36,7 +39,8 @@ else {
         </form>
     </div>
     <div class="col-xs-6 col-md-6">
-        <h1 class="headers" align="center"><?php echo $user?>'s Profile</h1>
+        <h1 class="headers" align="center"><?php if(!isset($_POST['searchedFriend'])) echo $user; else
+        echo $viewing;?>'s Profile</h1>
     </div>
     <div class="col-xs-3 col-md-3">
         <br>
@@ -44,37 +48,78 @@ else {
             <input type="submit" name="createPost" value="New Post" class="btn btn-primary button"/>
         </span>
         <span style="float:right;">
-            <form action = "profile.php" method="GET" align="center">
+            <form action = "profile.php" method="POST" align="center">
+            <br><br>
             <i class="glyphicon glyphicon-search"></i>
             <input type="text" placeholder="Search..." name="searchBar"/>
+            <input type="submit" name="submitSearch" value="go">
         </form>
         </span>
     </div>
+</div>
+<div class="container" id="container1">
+        <?php
+        if (!isset($_POST['searchBar']) && !isset($_POST['searchedFriend']))
+        {
+            
+        }
+        else if (isset($_POST['searchBar']))
+        {
+            $table = <<<EOD
+    <table class="table table-sm table-inverse">
+  <thead>
+    <tr>
+      <th>Username</th>
+    </tr>
+  </thead>
+  <tbody>
+EOD;
+
+
+            $search = $_POST['searchBar'];
+            $sQuery = $userposts=DB::query("SELECT ".UserTable::USERNAME_FIELD." FROM ".UserTable::TABLE_NAME." WHERE ".UserTable::USERNAME_FIELD." LIKE ".'\'%'.$search.'%\'');
+            for($i = 0; $i < count($sQuery); $i++)
+            {
+                $ix =  $sQuery[$i]['username'];
+                $table .= '<form method="post" action="profile.php">';
+                $table .= '<input type="hidden" name="searchedFriend" value="'.$ix.'" >';
+                $table .= "<tr><td>".'<input type="submit" class="submitLink" value="'.$ix.'"></td></tr></form>';
+            }
+      
+            $table .= <<<EOD
+  </tbody>
+</table>
+EOD;
+    echo $table;
+    }
+?>
 </div>
 <div class="container">
     <div class="col-xs-3 col-md-3">
     </div>
     <div class="col-xs-6 col-md-6 whiteColumn" style="border-radius: 10px">
         <?php
-        if (isset($_POST["profileButton"])) {
+        if (isset($_POST['searchedFriend'])) 
+        {
             $userposts = DB::query("SELECT * FROM ".PostsTable::TABLE_NAME . " where " . PostsTable::OWNER_FIELD . " = %s",
-                $user);
-            if (count($userposts) === 0) {
-                echo "You haven't made any posts. Feel free to make some";
-            }
-        }
-        else {
-            $userposts = DB::query("SELECT * FROM ".PostsTable::TABLE_NAME . " where " . PostsTable::OWNER_FIELD . " = %s",
-                $_POST["searchBar"]);
+                $viewing);
             if (count($userposts) === 0) {
                 $exist = DB::query("SELECT * FROM ".UserTable::TABLE_NAME." where ".UserTable::USERNAME_FIELD." = %s",
-                    $_POST["searchBar"]);
+                    $viewing);
                 if (count($exist) === 0) {
                     echo "This user does not exist. Please verify username and try again";
                 }
                 else {
                     echo "This user hasn't made any posts. Inspire them";
                 }
+            }
+        }
+            else 
+            {
+            $userposts = DB::query("SELECT * FROM ".PostsTable::TABLE_NAME . " where " . PostsTable::OWNER_FIELD . " = %s",
+                $user);
+            if (count($userposts) === 0) {
+                echo "You haven't made any posts. Feel free to make some";
             }
         }
 
