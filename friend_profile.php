@@ -20,10 +20,10 @@
         <!doctype html>
     <html> 
         <head>
-            <title>Profile Page</title>
+            <title>Friend Profile Page</title>
         </head>
 
-    <h1><strong>Your Profile</strong></h1><br /><br />
+    <h1><strong>Friend Profile</strong></h1><br /><br />
     <form action="timeline.php" method="post">
         <input type="submit" name="returntotimeline" value="Return to Timeline" /><br />
     </form>
