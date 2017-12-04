@@ -20,7 +20,13 @@ includeConstants();
 dbConfig();
 session_start(); # initialize session to pull and push variables
 
-$user = $_SESSION["userObject"]; #initialize user so header can be customized
+if (isset($_POST["profileButton"])) {
+    $userObject = $_SESSION["userObject"]; #initialize user so header can be customized
+    $user = $userObject->getUsername();
+}
+else {
+    $user = $_POST["searchBar"];
+}
 ?>
 <div class="fixedHeader">
     <div class="col-xs-3 col-md-3">
@@ -30,7 +36,7 @@ $user = $_SESSION["userObject"]; #initialize user so header can be customized
         </form>
     </div>
     <div class="col-xs-6 col-md-6">
-        <h1 class="headers" align="center"><?php echo $user->getUsername()?>'s Profile</h1>
+        <h1 class="headers" align="center"><?php echo $user?>'s Profile</h1>
     </div>
     <div class="col-xs-3 col-md-3">
         <br>
@@ -50,13 +56,33 @@ $user = $_SESSION["userObject"]; #initialize user so header can be customized
     </div>
     <div class="col-xs-6 col-md-6 whiteColumn" style="border-radius: 10px">
         <?php
-        $userposts=DB::query("SELECT * FROM ".PostsTable::TABLE_NAME." where ".PostsTable::OWNER_FIELD." = %s",
-            $user->getUsername());
+        if (isset($_POST["profileButton"])) {
+            $userposts = DB::query("SELECT * FROM ".PostsTable::TABLE_NAME . " where " . PostsTable::OWNER_FIELD . " = %s",
+                $user);
+            if (count($userposts) === 0) {
+                echo "You haven't made any posts. Feel free to make some";
+            }
+        }
+        else {
+            $userposts = DB::query("SELECT * FROM ".PostsTable::TABLE_NAME . " where " . PostsTable::OWNER_FIELD . " = %s",
+                $_POST["searchBar"]);
+            if (count($userposts) === 0) {
+                $exist = DB::query("SELECT * FROM ".UserTable::TABLE_NAME." where ".UserTable::USERNAME_FIELD." = %s",
+                    $_POST["searchBar"]);
+                if (count($exist) === 0) {
+                    echo "This user does not exist. Please verify username and try again";
+                }
+                else {
+                    echo "This user hasn't made any posts. Inspire them";
+                }
+            }
+        }
 
         foreach ($userposts as $postarray) {
             $post = Post::createPost($postarray);
             echo $post->displayPost();
         }
+
         ?>
     </div>
     <div class="col-xs-3 col-md-3">

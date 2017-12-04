@@ -14,7 +14,7 @@
 <div class="fixedHeader">
     <div class="col-xs-3 col-md-3">
             <br>
-            <form action="profile.php" method="GET">
+            <form action="profile.php" method="POST">
                 <input type="submit" name="profileButton" value="Profile" class="btn btn-primary button"/>
             </form>
     </div>
@@ -27,7 +27,7 @@
             <input type="submit" name="createPost" value="New Post" class="btn btn-primary button"/>
         </span>
         <span style="float:right;">
-            <form action = "profile.php" method="GET" align="center">
+            <form action = "profile.php" method="POST" align="center">
             <i class="glyphicon glyphicon-search"></i>
             <input type="text" placeholder="Search..." name="searchBar"/>
         </form>
@@ -72,6 +72,10 @@
                 $post = Post::createPost($array);
                 echo $post->displayPost();
             }
+        }
+
+        if (count($currUser->getPosts()) === 0) {
+            echo "You have no posts to view. Follow some users or make some posts... or both";
         }
         ?>
 

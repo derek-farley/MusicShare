@@ -3,9 +3,10 @@ function incrementLikes(form) {
     let post_id = form.elements.namedItem("post_id").value;
     console.log(document.getElementById(post_id + " likes").innerHTML);
     let currLikes = parseInt(document.getElementById(post_id + " likes").innerHTML);
-    document.getElementById(post_id + " likes").innerHTML = String(currLikes+1);
+    let newLikes = currLikes + 1;
+    document.getElementById(post_id + " likes").innerHTML = String(newLikes);
     changeLikeButton(post_id);
-    updateDatabase("like");
+    updateDatabase(post_id, "like", newLikes);
 }
 
 function decrementLikes(form) {
@@ -13,9 +14,10 @@ function decrementLikes(form) {
     let post_id = form.elements.namedItem("post_id").value;
     console.log(document.getElementById(post_id + " likes").innerHTML);
     let currLikes = parseInt(document.getElementById(post_id + " likes").innerHTML);
-    document.getElementById(post_id + " likes").innerHTML = String(currLikes-1);
+    let newLikes = currLikes - 1;
+    document.getElementById(post_id + " likes").innerHTML = String(newLikes);
     changeUnlikeButton(post_id);
-    updateDatabase("unlike");
+    updateDatabase(post_id, "unlike", newLikes);
 }
 
 function incrementReposts(form) {
@@ -23,9 +25,10 @@ function incrementReposts(form) {
     let post_id = form.elements.namedItem("post_id").value;
     console.log(document.getElementById(post_id + " reposts").innerHTML);
     let currReposts = parseInt(document.getElementById(post_id + " reposts").innerHTML);
-    document.getElementById(post_id + " reposts").innerHTML = String(currReposts+1);
+    let newReposts = currReposts + 1;
+    document.getElementById(post_id + " reposts").innerHTML = String(newReposts);
     changeRepostButton(post_id);
-    updateDatabase("repost");
+    updateDatabase(post_id, "repost", newReposts);
 }
 
 function decrementReposts(form) {
@@ -33,9 +36,10 @@ function decrementReposts(form) {
     let post_id = form.elements.namedItem("post_id").value;
     console.log(document.getElementById(post_id + " reposts").innerHTML);
     let currReposts = parseInt(document.getElementById(post_id + " reposts").innerHTML);
-    document.getElementById(post_id + " reposts").innerHTML = String(currReposts-1);
+    let newReposts = currReposts - 1;
+    document.getElementById(post_id + " reposts").innerHTML = String(newReposts);
     changeUnrepostButton(post_id);
-    updateDatabase("unrepost");
+    updateDatabase(post_id, "unrepost", newReposts);
 }
 
 function changeLikeButton(post_id) {
@@ -63,20 +67,33 @@ function changeUnrepostButton(post_id) {
     document.getElementById(post_id + " repostButton").onclick = function() { incrementReposts(this.form)};
 }
 
-function updateDatabase(post_id, operation) {
-    var scriptURL = "updateDatabase.php";
+function updateDatabase(post_id, operation, newValue) {
+    console.log("updating db");
+    let requestObj = new XMLHttpRequest();
+    let scriptURL = "updateDatabase.php";
 
-    /* adding name to url */
-    var name = document.getElementById("name").value;
     scriptURL += "?postid=" + post_id;
 
     scriptURL += "&operation=" + operation;
+
+    scriptURL += "&newValue=" + newValue;
     /* adding random value to url to avoid cache */
-    var randomValueToAvoidCache = (new Date()).getTime();
+    let randomValueToAvoidCache = (new Date()).getTime();
     scriptURL += "&randomValue=" + randomValueToAvoidCache;
 
-    var asynch = true; // asynchronous
+    let asynch = true; // asynchronous
     requestObj.open("GET", scriptURL, asynch);
     /* sending request */
+    requestObj.onreadystatechange = function() { processProgress(requestObj)};
     requestObj.send(null);
+}
+
+function processProgress(requestObj) {
+    if (requestObj.readyState === 4) {
+        if (requestObj.status === 200) {
+            /* retrieving response */
+            let results = requestObj.responseText;
+            console.log(results);
+        }
+    }
 }

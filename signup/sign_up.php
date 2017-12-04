@@ -21,7 +21,7 @@
         $_SESSION["user"] = $provided_user;
         $_SESSION["new_user"] = true;
         # flag to prevent future scripts from wasting time querying all tables for a new user
-        header("Location: timeline.php");
+        header("Location: ../timeline.php");
 	}
 
 	$signup = <<<EOBODY
