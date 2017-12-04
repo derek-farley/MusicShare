@@ -60,8 +60,10 @@ else
     <div class="col-xs-4 col-md-4">
         <br>
         <span style="float: left;">
-            <input type="submit" name="createPost" value="New Post" class="btn btn-primary button" align="center"/>
+        <form action="newpost.php" method="post">
+            <input type="submit" name="createPostfromprofile" value="New Post" class="btn btn-primary button" align="center"/>
             &nbsp;&nbsp;&nbsp;
+        </form>
         </span>
         <span style="float:left;">
             <form action = "profile.php" method="POST">
