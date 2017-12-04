@@ -69,9 +69,7 @@
         $currUser = new User($username);
         $_SESSION["userObject"] = $currUser; #make user object accessible in any script
         #print_r($postsArray[0]);
-        #print_r($postsArray);
         #print_r($currUser->getReposts());
-
         if (isset($_POST['submitPost'])){
             $newpost= new Post($currUser,$_POST['artist'],$_POST['album'],$_POST['song'],$_POST['image']);
             $newpost.addPosttoDb();
@@ -82,11 +80,11 @@
             if ($currUser->isRepost($array)) {
                 $array[PostsTable::POST_ID_FIELD] = $currUser->getReposts()[$array[PostsTable::POST_ID_FIELD]];
                 $post = Post::createRepost($array);
-                echo $post->displayPost();
+                echo $post->displayPost($currUser);
             }
             else {
                 $post = Post::createPost($array);
-                echo $post->displayPost();
+                echo $post->displayPost($currUser);
             }
         }
 

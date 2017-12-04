@@ -166,7 +166,7 @@ EOD;
 
         foreach ($userposts as $postarray) {
             $post = Post::createPost($postarray);
-            echo $post->displayPost();
+            echo $post->displayPost($_SESSION["userObject"]);
         }
 
         ?>
