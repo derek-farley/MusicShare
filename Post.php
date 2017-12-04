@@ -1,100 +1,223 @@
 <?php
-  declare(strict_types=1);
-  require_once "support.php";
-  require_once "meekrodb.2.3.class.php";
- 
-  /**
-  * Object representing posts of shared music by Users
-  */
+declare(strict_types=1);
+require_once "support.php";
+require_once "meekrodb.2.3.class.php";
 
-  class Post {
+/**
+ * Object representing posts of shared music by Users
+ */
+
+class Post {
     private $owner; #string
     private $song_url; #string
-    private $likes=0; #int
-    private $reposts=0; #int
+    private $likes; #int
+    private $reposts; #int
     private $artist; #string
     private $songalbum; #string
     private $image; #string
-    private static $id=0; #int
+    private $id; #int
     private $timestamp; # string
+    private $isRepost;
+    private $reposter;
 
 
-    public function __construct(string $owner, string $artist, string $songalbum, string $song_url, string $image) {
+
+    public function __construct(string $owner, string $artist, string $songalbum, string $song_url, string $image,
+                                int $likes=0, int $reposts=0, string $timestamp=null, int $post_id=null,
+                                $isRepost = false, $reposter=null) {
         $this->owner=$owner;
         $this->song_url=$song_url;
         $this->artist=$artist;
         $this->songalbum=$songalbum;
         $this->image=base64_encode($image); #base64 encode for displaying in img tag in html later
-        Post::$id++;
-        $this->timestamp=date("h:i:sa");
+        if ($post_id === null) {
+          $this->post_id = $this->getNextPostId();
+        }
+        else {
+            $this->post_id = $post_id;
+        }
+        $this->reposts = $reposts;
+        $this->likes = $likes;
+        if ($timestamp === null) {
+            $this->timestamp = date("h:i:sa");
+        }
+        else {
+            $this->timestamp = $timestamp;
+        }
+        $this->isRepost = $isRepost;
+        $this->reposter = $reposter;
     }
 
     public function __toString() {
-      return "owner: ".$this->owner."song_url: ".$this->song_url." # of likes: ".$this->likes." # of reposts: ".$this->reposts."";
+        return "owner: ".$this->owner."song_url: ".$this->song_url." # of likes: ".$this->likes." # of reposts: ".$this->reposts."";
     }
 
     public function getAlbumArt() {
-      return $this->image;
+        return $this->image;
+    }
+
+    public function getNextPostId() {
+        return DB::queryFirstField("Select MAX(".PostsTable::POST_ID_FIELD.") from ".PostsTable::TABLE_NAME.";") + 1;
     }
 
     public function displayPost() {
-      $post_id = Post::$id;
-      $display= <<<EOBODY
+      $repostMessage = "";
+      if ($this->isRepost) {
+        $repostMessage = "&nbsp <i class=\"glyphicon glyphicon-refresh\"></i> by <strong>$this->reposter</strong>";
+      }
+        $display= <<<EOBODY
+        <br>
       <div class="panel panel-default">
-        <table><tr><th>$this->owner</th></tr><tr><td><img src="data:image/jpeg;base64,$this->image" height="50" width="50"/></td></tr>
-        <tr><td> artist: $this->artist, album: $this->songalbum</td></tr>
-        <tr><td> Music link: <a href=$this->song_url>$this->song_url</a></td></tr>
-        <tr><td> Likes: $this->likes."</td></tr><tr><td> Reposts: $this->reposts</td></tr></table>
-        <form method="post" >
-        <input type="submit" name="likeButton" value="Like" /><br/>
-        <input type="submit" name="repostButton" value="Repost" /><br/>
-        <input type="hidden" name="post_id" value=$post_id/>
-        </form>
-      </div>
+        <div class="panel-heading">
+            <strong>$this->owner</strong> $repostMessage
+        </div>
+        <div class="panel-body">
+            <div class="col-xs-6 col-md-6">
+                <div class="row">
+                    <div class="well">
+                        <strong>Artist:</strong> $this->artist
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="well">
+                        <strong> Album/Song Name:</strong> $this->songalbum
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="well">
+                        <strong>Music Link:</strong> <a href=http://$this->song_url target="_blank">$this->song_url</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-md-6">
+                <img src="data:image/jpeg;base64,$this->image"/><br><br>
+                <form method="post" align="center">
+                    <strong>Likes:</strong> $this->likes <i class="glyphicon glyphicon-thumbs-up"></i>
+                    <input type="submit" name="like Button" value="Like" class="btn btn-default button"/>
+                </form>
+                <form method="post" align="center">
+                    <strong>Reposts:</strong> $this->reposts <i class="glyphicon glyphicon-refresh"></i>
+                    <input type="submit" name="repostButton" value="Repost" class="btn btn-default button"/>
+                </form>
+            </div>
+        </div>
+        <div class="panel-footer" align="center">
+            <strong>$this->timestamp</strong>
+        </div>
+        </div><br><br>
 EOBODY;
 
-      if(array_key_exists('likeButton',$_POST)){
-        $this->incrementLikes();
-      }
+        if(array_key_exists('likeButton',$_POST)){
+            $this->incrementLikes();
+        }
 
-      if(array_key_exists('repostButton',$_POST)){
-        $this->incrementReposts();
-      }
+        if(array_key_exists('repostButton',$_POST)){
+            $this->incrementReposts();
+        }
 
-      return $display;
+        return $display;
+    }
+
+
+    public function displayRepost() {
+        $display= <<<EOBODY
+        <br>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>$this->owner</strong>
+        </div>
+        <div class="panel-body">
+            <div class="col-xs-6 col-md-6">
+                <div class="row">
+                    <div class="well">
+                        <strong>Artist:</strong> $this->artist
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="well">
+                        <strong> Album/Song Name:</strong> $this->songalbum
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="well">
+                        <strong>Music Link:</strong> <a href=http://$this->song_url target="_blank">$this->song_url</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-md-6">
+                <img src="data:image/jpeg;base64,$this->image"/><br><br>
+                <form method="post" align="center">
+                    <strong>Likes:</strong> $this->likes <i class="glyphicon glyphicon-thumbs-up"></i>
+                    <input type="submit" name="likeButton" value="Like" class="btn btn-default button"/>
+                    <input type="hidden" name="post_id" id="post_id" value=$this->post_id/>
+                </form>
+                <form method="post" align="center">
+                    <strong>Reposts:</strong> $this->reposts <i class="glyphicon glyphicon-refresh"></i>
+                    <input type="submit" name="repostButton" value="Repost" class="btn btn-default button"/>
+                    <input type="hidden" name="post_id" id="post_id" value=$this->post_id/>
+                </form>
+                
+            </div>
+            
+        </div>
+        <div class="panel-footer" align="center">
+            <strong>$this->timestamp</strong>
+        </div>
+        </div><br>
+EOBODY;
+
+        if(array_key_exists('likeButton',$_POST)){
+            $this->incrementLikes();
+        }
+
+        if(array_key_exists('repostButton',$_POST)){
+            $this->incrementReposts();
+        }
+
+        return $display;
     }
 
     public function incrementLikes(){
-      $this->likes++;
-      //somehow add post and the liking user to LikeRepostTable
+        $this->likes++;
+        //somehow add post and the liking user to LikeRepostTable
     }
 
     public function incrementReposts(){
-      $this->reposts++;
-      //somehow add post and Reposting user to LikeRepostTable
+        $this->reposts++;
+        //somehow add post and Reposting user to LikeRepostTable
     }
 
     public function addPostToDb() {
-      dbConfig();
-      session_start();
-      DB::insert(PostsTable::TABLE_NAME, array(
-           PostsTable::POST_ID_FIELD => Post::$id,
-           PostsTable::TIMESTAMP_FIELD =>$this->timestamp,
-           PostsTable::SONGALBUM_FIELD => $this->songalbum,
-            PostsTable::ARTIST_FIELD => $this->artist, 
-          PostsTable::LIKES_FIELD => $this->likes, 
-          PostsTable::REPOSTS_FIELD => $this->reposts, 
-          PostsTable::OWNER_FIELD => $this->owner, 
-          PostsTable::ALBUMART_FIELD =>$this->image,
+        dbConfig();
+        session_start();
+        $post_id = $this->getNextPostId();
+        DB::insert(PostsTable::TABLE_NAME, array(
+            PostsTable::POST_ID_FIELD => Post::$id,
+            PostsTable::TIMESTAMP_FIELD =>$this->timestamp,
+            PostsTable::SONGALBUM_FIELD => $this->songalbum,
+            PostsTable::ARTIST_FIELD => $this->artist,
+            PostsTable::LIKES_FIELD => $this->likes,
+            PostsTable::REPOSTS_FIELD => $this->reposts,
+            PostsTable::OWNER_FIELD => $this->owner,
+            PostsTable::ALBUMART_FIELD =>$this->image,
             PostsTable::URL_FIELD =>$this->song_url,));
 
     }
 
     public static function createPost($post_array) {
-      return new Post($post_array[PostsTable::OWNER_FIELD], $post_array[PostsTable::ARTIST_FIELD],
-          $post_array[PostsTable::SONGALBUM_FIELD], $post_array[PostsTable::URL_FIELD], $post_array[PostsTable::ALBUMART_FIELD]);
-  }
+        return new Post($post_array[PostsTable::OWNER_FIELD], $post_array[PostsTable::ARTIST_FIELD],
+            $post_array[PostsTable::SONGALBUM_FIELD], $post_array[PostsTable::URL_FIELD], $post_array[PostsTable::ALBUMART_FIELD],
+            (int)$post_array[PostsTable::LIKES_FIELD], (int)$post_array[PostsTable::REPOSTS_FIELD], $post_array[PostsTable::TIMESTAMP_FIELD],
+            (int)$post_array[PostsTable::POST_ID_FIELD]);
+    }
 
-  }
+    public static function createRepost($post_array) {
+        return new Post($post_array[PostsTable::OWNER_FIELD], $post_array[PostsTable::ARTIST_FIELD],
+            $post_array[PostsTable::SONGALBUM_FIELD], $post_array[PostsTable::URL_FIELD], $post_array[PostsTable::ALBUMART_FIELD],
+            (int)$post_array[PostsTable::LIKES_FIELD], (int)$post_array[PostsTable::REPOSTS_FIELD], $post_array[PostsTable::TIMESTAMP_FIELD],
+            (int)$post_array[PostsTable::POST_ID_FIELD][LikeRepostTable::POST_ID_FIELD], true,
+            $post_array[PostsTable::POST_ID_FIELD][LikeRepostTable::USERNAME_FIELD]);
+    }
+}
 
 ?>

@@ -12,6 +12,7 @@
 <body>
 <div class="fixedHeader">
     <div class="col-xs-3 col-md-3">
+            <br>
             <form action="profile.php" method="GET">
                 <input type="submit" name="profileButton" value="Profile" class="btn btn-primary button"/>
             </form>
@@ -20,6 +21,7 @@
         <h1 class="headers" align="center">MusicShare</h1>
     </div>
     <div class="col-xs-3 col-md-3">
+        <br>
         <span style="float:left;">
             <input type="submit" name="createPost" value="New Post" class="btn btn-primary button"/>
         </span>
@@ -34,7 +36,7 @@
 <div class="container">
     <div class="col-xs-3 col-md-3">
     </div>
-    <div class="col-xs-6 col-md-6 whiteColumn">
+    <div class="col-xs-6 col-md-6 whiteColumn" style="border-radius: 10px">
         <?php
         require_once "support.php";
         require_once "meekrodb.2.3.class.php";
@@ -56,10 +58,19 @@
         $_SESSION["userObject"] = $currUser; #make user object accessible in any script
         #print_r($postsArray[0]);
         #print_r($postsArray);
+        #print_r($currUser->getReposts());
 
         foreach ($currUser->getPosts() as $array) {
-            $post = Post::createPost($array);
-            echo $post->displayPost();
+           # print_r($array);
+            if ($currUser->isRepost($array)) {
+                $array[PostsTable::POST_ID_FIELD] = $currUser->getReposts()[$array[PostsTable::POST_ID_FIELD]];
+                $post = Post::createRepost($array);
+                echo $post->displayPost();
+            }
+            else {
+                $post = Post::createPost($array);
+                echo $post->displayPost();
+            }
         }
         ?>
 
