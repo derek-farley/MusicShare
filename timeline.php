@@ -24,7 +24,7 @@
     <div class="col-xs-4 col-md-4">
         <br>
         <span style="float:left;">
-        <form action="newpostphp" method="post">
+        <form action="newpost.php" method="post">
             <input type="submit" name="createPostfromtimeline" value="New Post" class="btn btn-primary button" align="center"/>
             &nbsp;&nbsp;&nbsp;
         </form>
