@@ -31,7 +31,7 @@
     <div class="col-xs-4 col-md-4">
         <br>
         <span style="float:left;">
-        <form action="newpostphp" method="post">
+        <form action="newpost.php" method="post">
             <input type="submit" name="createPostfromtimeline" value="New Post" class="btn btn-primary button" align="center"/>
             &nbsp;&nbsp;&nbsp;
         </form>
@@ -71,6 +71,11 @@
         #print_r($postsArray[0]);
         #print_r($postsArray);
         #print_r($currUser->getReposts());
+
+        if (isset($_POST['submitPost'])){
+            $newpost= new Post($currUser,$_POST['artist'],$_POST['album'],$_POST['song'],$_POST['image']);
+            $newpost.addPosttoDb();
+        }
 
         foreach ($currUser->getPosts() as $array) {
             # print_r($array);
