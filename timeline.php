@@ -65,6 +65,11 @@
         #print_r($postsArray);
         #print_r($currUser->getReposts());
 
+        if (isset($_POST['submitPost'])){
+            $newpost= new Post($currUser,$_POST['artist'],$_POST['album'],$_POST['song'],$_POST['image']);
+            $newpost.addPosttoDb();
+        }
+
         foreach ($currUser->getPosts() as $array) {
            # print_r($array);
             if ($currUser->isRepost($array)) {

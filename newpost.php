@@ -11,6 +11,10 @@
 </head>
 <body>
 <?php
+includeConstants();
+dbConfig();
+session_start();
+
 require_once("support.php");
 require_once "meekrodb.2.3.class.php";
 
