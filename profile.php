@@ -21,9 +21,20 @@ dbConfig();
 session_start(); # initialize session to pull and push variables
 
 
-if (isset($_POST['submitPost'])){
-    $newpost= new Post($_SESSION['user'],$_POST['artist'],$_POST['album'],$_POST['song'],$_POST['image']);
-    $newpost.addPosttoDb();
+
+    if (isset($_POST['submitPost'])){
+        $anImage = '';
+        if (isset($_POST['image']))
+        {
+             $anImage = file_get_contents('song.jpg');
+        }
+        else
+        {
+            $anImage = file_get_contents('song.jpg');
+        }
+        var_dump($anImage);
+        $newpost= new Post($_SESSION['user'],$_POST['artist'],$_POST['album'],$_POST['song'],$anImage);
+        $newpost->addPostToDb();    
 }
 
 if (isset($_POST['searchedFriend']))

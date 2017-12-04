@@ -2,7 +2,8 @@
 declare(strict_types=1);
 require_once "support.php";
 require_once "meekrodb.2.3.class.php";
-
+if (!isset($_SESSION))
+    session_start();
 /**
  * Object representing posts of shared music by Users
  */
@@ -127,10 +128,9 @@ EOBODY;
 
     public function addPostToDb() {
         dbConfig();
-        session_start();
         $post_id = $this->getNextPostId();
         DB::insert(PostsTable::TABLE_NAME, array(
-            PostsTable::POST_ID_FIELD => Post::$id,
+            PostsTable::POST_ID_FIELD => $this->post_id,
             PostsTable::TIMESTAMP_FIELD =>$this->timestamp,
             PostsTable::SONGALBUM_FIELD => $this->songalbum,
             PostsTable::ARTIST_FIELD => $this->artist,
