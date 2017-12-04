@@ -13,18 +13,18 @@
     private $likes=0; #int
     private $reposts=0; #int
     private $artist; #string
-    private $album; #string
+    private $songalbum; #string
     private $image; #string
     private static $id=0; #int
     private $timestamp; # string
 
 
-    public function __construct(string $owner, string $artist, string $album, string $song_url, string $image) {
+    public function __construct(string $owner, string $artist, string $songalbum, string $song_url, string $image) {
         $this->owner=$owner;
         $this->song_url=$song_url;
         $this->artist=$artist;
-        $this->album=$album;
-        $this->image=$image;
+        $this->songalbum=$songalbum;
+        $this->image=base64_encode($image); #base64 encode for displaying in img tag in html later
         Post::$id++;
         $this->timestamp=date("h:i:sa");
     }
@@ -35,7 +35,7 @@
 
     public function displayPost() {
       $display= "<table><tr><th>".$this->owner."</th></tr><tr><td>".'<img src="data:image/jpeg;base64,'.base64_encode($this->image).'"/>'."</td></tr>
-      <tr><td> artist: ".$this->artist.", album; ".$this->album."</td></tr>
+      <tr><td> artist: ".$this->artist.", album; ".$this->songalbum."</td></tr>
       <tr><td> Music link: <a href=\"".$this->song_url."\">".$this->song_url."</a></td></tr>
       <tr><td> Likes: ".$this->likes."</td></tr><tr><td> Reposts: ".$this->reposts."</td></tr></table>
       <form method=\"post\">
@@ -70,7 +70,7 @@
       DB::insert(PostsTable::TABLE_NAME, array(
            PostsTable::POST_ID_FIELD => $this->id,
            PostsTable::TIMESTAMP_FIELD =>$this->timestamp,
-           PostsTable::SONGALBUM_FIELD => $this->album, 
+           PostsTable::SONGALBUM_FIELD => $this->songalbum,
             PostsTable::ARTIST_FIELD => $this->artist, 
           PostsTable::LIKES_FIELD => $this->likes, 
           PostsTable::REPOSTS_FIELD => $this->reposts, 

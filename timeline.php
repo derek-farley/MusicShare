@@ -1,31 +1,24 @@
 <?php
-    require_once("support.php");
+    require_once "support.php";
     require_once "meekrodb.2.3.class.php";
-    require_once("Post.php");
+    require_once "Post.php";
+    require_once "User.php";
     session_start();
     #this is to be the Main Page of the website, once logged in. This should display the user's timeline. Still a draft.
-
-     dbConfig();
+    includeConstants();
+    dbConfig();
  
 # initialize session to pull and push variables
-    $userName = $_SESSION["user"];
+    $username = $_SESSION["user"];
     //$userObject = new User()
- 
-    $userQuery = DB::query("SELECT * from posts where ".'owner'." = %s",
-            'pkarki113'); # check for user in db
-    $allPosts = [];
- 
-    for($i = 0; $i < count($userQuery); $i++)
-    {
-        $owner = $userQuery[$i]['owner'];
-        $artist = $userQuery[$i]['artistname'];
-        $album = $userQuery[$i]['songalbumname'];
-        $song_url = "inserturlhere";
-        $imagefilepath = $userQuery[$i]['albumart'];
-        $toAdd = new Post($owner, $artist, $album, $song_url, $imagefilepath);
-        array_push($allPosts , $toAdd);
-        echo $toAdd->displayPost();
-    }
+
+    $currUser = new User($username);
+    echo strval($currUser);
+    $_SESSION["user"] = $currUser; #make user object accessible in any script
+    #print_r($postsArray[0]);
+    #print_r($postsArray);
+      #  echo '<img src="data:image/jpeg;base64,'.base64_encode($postsArray[0]["albumart"]).'"/>';
+
  
 
     $userTable = '<table border="1">';
@@ -34,8 +27,7 @@
 
 
     
-    $top = "<h1><strong>".$userName."'s Timeline</strong></h1>";
-
+    $top = "<h1><strong>".$username."'s Timeline</strong></h1>";
 
 
     //var_dump($userQuery);

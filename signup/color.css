@@ -7,10 +7,17 @@ img {
     max-height: 100%;
 }
 
+.conform {
+    height: auto;
+}
 .headers {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .button {
     background-color: #4CAF50; /* Green */
     color: white;
+}
+
+.whiteColumn {
+    background-color: white;
 }
