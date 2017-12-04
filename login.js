@@ -1,6 +1,3 @@
-window.onsubmit=validate;
-
-
 function validate() {
 	var username = document.getElementById("username").value;
     var pwd = document.getElementById("pwd").value;

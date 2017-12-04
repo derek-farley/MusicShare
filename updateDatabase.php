@@ -1,6 +1,8 @@
 <?php
 require_once "meekrodb.2.3.class.php";
 require_once "support.php";
+require_once "Post.php";
+require_once "User.php";
 
 includeConstants();
 dbConfig();
