@@ -1,62 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- scale application to window space available (1 ==> 100%) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="signup/color.css" />
+</head>
+<body>
 <?php
-    require_once("support.php");
-    require_once "meekrodb.2.3.class.php";
+require_once("support.php");
+require_once "meekrodb.2.3.class.php";
+require_once "Post.php";
+require_once "User.php";
 
+includeConstants();
+dbConfig();
+session_start(); # initialize session to pull and push variables
 
-    includeConstants();
-    dbConfig();
-    session_start(); # initialize session to pull and push variables
-
-    $user=$_SESSION["user"];
-    //$user="pkarki1";
-    
-    $userposts=DB::query("SELECT * FROM posts WHERE owner='".$user."'order by STR_TO_DATE(`timestamp`,'%h:%i:%s %p') desc");
-
-
-    //getting and adding reposts to userposts
-    //$reposts_ids=DB::query("SELECT post_id FROM likerepost WHERE username='".$user."' AND isLike=0");
-    
-    // for($j=0; $j<count($reposts_ids); $j++){
-    //     $post=DB::query("SELECT * FROM posts WHERE post_id='".$reposts_ids[$j]."'");
-    //     array_push($userposts, $post);
-    // }
-    //order by STR_TO_DATE(`timestamp`,'%h:%i:%s %p') desc
-
-
-    $top = <<<EOBODY
-        <!doctype html>
-    <html> 
-        <head>
-            <title>Profile Page</title>
-        </head>
-
-    <h1><strong>Your Profile</strong></h1><br /><br />
-    <form action="timeline.php" method="post">
-        <input type="submit" name="returntotimeline" value="Return to Timeline" /><br />
-    </form>
-    <form action="friend_profile.php" method="post">
-        <input type="text" name="queried_friend"/>
-        <input type="submit" name="submit_query" value="Find" />
-    </form>
-EOBODY;
-
-$bottom="";
-
-for($i = 0; $i < count($userposts); $i++)
-    {
-        $owner = $userposts[$i]['owner'];
-        $artist = $userposts[$i]['artistname'];
-        $album = $userposts[$i]['songalbumname'];
-        $song_url = $userposts[$i]['url'];
-        $imagefilepath = $userposts[$i]['albumart'];
-        $toAdd = new Post($owner, $artist, $album, $song_url, $imagefilepath);
-        $bottom+= $toAdd->displayPost();
-    }
-
-    #create shortcuts to Timeline feed, search query bar for friends, loggin out?
-
-
-    $body=$top.$bottom;
-    $page = generatePage($body);
-    echo $page;
+$user = $_SESSION["userObject"]; #initialize user so header can be customized
 ?>
+<div class="fixedHeader">
+    <div class="col-xs-3 col-md-3">
+        <br>
+        <form action="timeline.php">
+            <input type="submit" name="timelineButton" value="Timeline" class="btn btn-primary button"/>
+        </form>
+    </div>
+    <div class="col-xs-6 col-md-6">
+        <h1 class="headers" align="center"><?php echo $user->getUsername()?>'s Profile</h1>
+    </div>
+    <div class="col-xs-3 col-md-3">
+        <br>
+        <span style="float:left;">
+            <input type="submit" name="createPost" value="New Post" class="btn btn-primary button"/>
+        </span>
+        <span style="float:right;">
+            <form action = "profile.php" method="GET" align="center">
+            <i class="glyphicon glyphicon-search"></i>
+            <input type="text" placeholder="Search..." name="searchBar"/>
+        </form>
+        </span>
+    </div>
+</div>
+<div class="container">
+    <div class="col-xs-3 col-md-3">
+    </div>
+    <div class="col-xs-6 col-md-6 whiteColumn" style="border-radius: 10px">
+        <?php
+        $userposts=DB::query("SELECT * FROM ".PostsTable::TABLE_NAME." where ".PostsTable::OWNER_FIELD." = %s",
+            $user->getUsername());
+
+        foreach ($userposts as $postarray) {
+            $post = Post::createPost($postarray);
+            echo $post->displayPost();
+        }
+        ?>
+    </div>
+    <div class="col-xs-3 col-md-3">
+    </div>
+</div>
+</body>
+</html>
