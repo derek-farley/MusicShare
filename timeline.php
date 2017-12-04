@@ -8,6 +8,7 @@
 
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="signup/color.css" />
+    <script type="text/javascript" src="postScript.js"></script>
 </head>
 <body>
 <div class="fixedHeader">

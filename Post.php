@@ -91,13 +91,17 @@ class Post {
             </div>
             <div class="col-xs-6 col-md-6">
                 <img src="data:image/jpeg;base64,$this->image"/><br><br>
-                <form method="post" align="center">
-                    <strong>Likes:</strong> $this->likes <i class="glyphicon glyphicon-thumbs-up"></i>
-                    <input type="submit" name="like Button" value="Like" class="btn btn-default button"/>
+                <form align="center">
+                <input type="hidden" name="post_id" value="$this->post_id"/>
+                    <strong>Likes:</strong> <span id="$this->post_id likes">$this->likes</span> <i class="glyphicon glyphicon-thumbs-up"></i>
+                    <input type="button" id="$this->post_id likeButton" name="like Button" 
+                    value="Like" class="btn btn-default button" onclick="incrementLikes(this.form);"/>
                 </form>
-                <form method="post" align="center">
-                    <strong>Reposts:</strong> $this->reposts <i class="glyphicon glyphicon-refresh"></i>
-                    <input type="submit" name="repostButton" value="Repost" class="btn btn-default button"/>
+                <form align="center">
+                    <input type="hidden" name="post_id" value="$this->post_id"/>
+                    <strong>Reposts:</strong> <span id="$this->post_id reposts">$this->reposts</span> <i class="glyphicon glyphicon-refresh"></i>
+                    <input type="button" id="$this->post_id repostButton" name="repostButton" value="Repost" 
+                    class="btn btn-default button" onclick="incrementReposts(this.form);"/>
                 </form>
             </div>
         </div>
@@ -107,72 +111,6 @@ class Post {
         </div><br><br>
 EOBODY;
 
-        if(array_key_exists('likeButton',$_POST)){
-            $this->incrementLikes();
-        }
-
-        if(array_key_exists('repostButton',$_POST)){
-            $this->incrementReposts();
-        }
-
-        return $display;
-    }
-
-
-    public function displayRepost() {
-        $display= <<<EOBODY
-        <br>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-            <strong>$this->owner</strong>
-        </div>
-        <div class="panel-body">
-            <div class="col-xs-6 col-md-6">
-                <div class="row">
-                    <div class="well">
-                        <strong>Artist:</strong> $this->artist
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="well">
-                        <strong> Album/Song Name:</strong> $this->songalbum
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="well">
-                        <strong>Music Link:</strong> <a href=http://$this->song_url target="_blank">$this->song_url</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-6 col-md-6">
-                <img src="data:image/jpeg;base64,$this->image"/><br><br>
-                <form method="post" align="center">
-                    <strong>Likes:</strong> $this->likes <i class="glyphicon glyphicon-thumbs-up"></i>
-                    <input type="submit" name="likeButton" value="Like" class="btn btn-default button"/>
-                    <input type="hidden" name="post_id" id="post_id" value=$this->post_id/>
-                </form>
-                <form method="post" align="center">
-                    <strong>Reposts:</strong> $this->reposts <i class="glyphicon glyphicon-refresh"></i>
-                    <input type="submit" name="repostButton" value="Repost" class="btn btn-default button"/>
-                    <input type="hidden" name="post_id" id="post_id" value=$this->post_id/>
-                </form>
-                
-            </div>
-            
-        </div>
-        <div class="panel-footer" align="center">
-            <strong>$this->timestamp</strong>
-        </div>
-        </div><br>
-EOBODY;
-
-        if(array_key_exists('likeButton',$_POST)){
-            $this->incrementLikes();
-        }
-
-        if(array_key_exists('repostButton',$_POST)){
-            $this->incrementReposts();
-        }
 
         return $display;
     }
