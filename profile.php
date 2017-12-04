@@ -7,7 +7,8 @@
     dbConfig();
     session_start(); # initialize session to pull and push variables
 
-    $user="pkarki1";
+    $user=$_SESSION["user"];
+    //$user="pkarki1";
     $reposts_ids=DB::query("SELECT post_id FROM likerepost WHERE username='".$user."' AND isLike=0");
     //$ids = join("','",$reposts_ids);   
     $userposts=DB::query("SELECT * FROM posts WHERE owner='".$user."'");

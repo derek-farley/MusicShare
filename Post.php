@@ -68,7 +68,7 @@
       dbConfig();
       session_start();
       DB::insert(PostsTable::TABLE_NAME, array(
-           PostsTable::POST_ID_FIELD => $this->id,
+           PostsTable::POST_ID_FIELD =>  Post::$id,
            PostsTable::TIMESTAMP_FIELD =>$this->timestamp,
            PostsTable::SONGALBUM_FIELD => $this->songalbum,
             PostsTable::ARTIST_FIELD => $this->artist, 
