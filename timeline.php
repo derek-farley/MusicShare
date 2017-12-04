@@ -13,10 +13,17 @@
 <body>
 <div class="fixedHeader">
     <div class="col-xs-4 col-md-4">
-            <br>
+        <br>
+        <span style="float: left">
             <form action="profile.php" method="POST">
-                <input type="submit" name="profileButton" value="Profile" class="btn btn-primary button"/>
+            <input type="submit" name="profileButton" value="Profile" class="btn btn-primary button"/>&emsp;&emsp;
             </form>
+        </span>
+        <span style="float: left;">
+            <form action="login.php">
+                <input type="submit" name="logoutButton" value="Logout" class="btn btn-primary button"/>&emsp;&emsp;
+            </form>
+        </span>
     </div>
     <div class="col-xs-4 col-md-4">
         <h1 class="headers" align="center">MusicShare</h1>
@@ -66,7 +73,7 @@
         #print_r($currUser->getReposts());
 
         foreach ($currUser->getPosts() as $array) {
-           # print_r($array);
+            # print_r($array);
             if ($currUser->isRepost($array)) {
                 $array[PostsTable::POST_ID_FIELD] = $currUser->getReposts()[$array[PostsTable::POST_ID_FIELD]];
                 $post = Post::createRepost($array);

@@ -75,9 +75,9 @@ function followUser(form) {
 }
 
 function changeFollowButton() {
-    document.getElementById("following").value = "Unfollow";
-    document.getElementById("following").style.backgroundColor = "PaleVioletRed";
-    document.getElementById("following").onclick = function() { unfollowUser(this.form)};
+    document.getElementById("followButton").value = "Unfollow";
+    document.getElementById("followButton").style.backgroundColor = "PaleVioletRed";
+    document.getElementById("followButton").onclick = function() { unfollowUser(this.form)};
 }
 
 function unfollowUser(form) {
@@ -88,9 +88,9 @@ function unfollowUser(form) {
 }
 
 function changeUnfollowButton() {
-    document.getElementById("following").value = "Follow";
-    document.getElementById("following").style.backgroundColor = "#4CAF50";
-    document.getElementById("following").onclick = function() { followUser(this.form)};
+    document.getElementById("followButton").value = "Follow";
+    document.getElementById("followButton").style.backgroundColor = "#4CAF50";
+    document.getElementById("followButton").onclick = function() { followUser(this.form)};
 }
 
 function updateDatabase(post_id, operation, newValue) {
@@ -100,9 +100,11 @@ function updateDatabase(post_id, operation, newValue) {
 
     if (post_id !== null) {
         scriptURL += "?postid=" + post_id;
+        scriptURL += "&operation=" + operation;
     }
-
-    scriptURL += "&operation=" + operation;
+    else {
+        scriptURL += "?operation=" + operation;
+    }
 
     scriptURL += "&newValue=" + newValue;
     /* adding random value to url to avoid cache */

@@ -60,8 +60,19 @@ else
         <form align="center">
             <input type="hidden" id="following" name="following" value="<?php if(!isset($_POST['searchedFriend'])) echo $user; else
                 echo $viewing;?>"/>
-            <input type="button" name="followButton" value="Follow" id="followButton" class="btn btn-primary button"
-            onclick="followUser(this.form)"/>
+            <?php
+                if(isset($_POST['searchedFriend']) && $_SESSION["userObject"]->getUsername() !== $viewing) {
+                    if (!$_SESSION["userObject"]->isFollowing($viewing)) {
+                        echo "<input type=\"button\" name=\"followButton\" value=\"Follow\" id=\"followButton\" class=\"btn btn-primary button\"
+                        onclick=\"followUser(this.form)\"/>";
+                    }
+                    else {
+                        echo "<input type=\"button\" name=\"followButton\" value=\"Unfollow\" id=\"followButton\" class=\"btn btn-primary button\"
+                        style='background-color: PaleVioletRed;' onclick=\"unfollowUser(this.form)\"/>";
+                    }
+                }
+            ?>
+
         </form>
     </div>
     <div class="col-xs-4 col-md-4">
