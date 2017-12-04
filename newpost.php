@@ -43,7 +43,6 @@ $body=<<<EOBODY
 	</div>
 	</body>
 EOBODY;
-
 $page = generatePage($body);
 echo $page;
 ?>
