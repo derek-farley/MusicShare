@@ -9,12 +9,18 @@
 
     $user=$_SESSION["user"];
     //$user="pkarki1";
-    //$reposts_ids=DB::query("SELECT post_id FROM likerepost WHERE username='".$user."' AND isLike=0");
-    //$ids = join("','",$reposts_ids);   
+    
     $userposts=DB::query("SELECT * FROM posts WHERE owner='".$user."'order by STR_TO_DATE(`timestamp`,'%h:%i:%s %p') desc");
-    //order by STR_TO_DATE(`timestamp`,'%h:%i:%s %p') desc
 
-    $allPosts = [];
+
+    //getting and adding reposts to userposts
+    //$reposts_ids=DB::query("SELECT post_id FROM likerepost WHERE username='".$user."' AND isLike=0");
+    
+    // for($j=0; $j<count($reposts_ids); $j++){
+    //     $post=DB::query("SELECT * FROM posts WHERE post_id='".$reposts_ids[$j]."'");
+    //     array_push($userposts, $post);
+    // }
+    //order by STR_TO_DATE(`timestamp`,'%h:%i:%s %p') desc
 
 
     $top = <<<EOBODY
@@ -44,7 +50,6 @@ for($i = 0; $i < count($userposts); $i++)
         $song_url = $userposts[$i]['url'];
         $imagefilepath = $userposts[$i]['albumart'];
         $toAdd = new Post($owner, $artist, $album, $song_url, $imagefilepath);
-        array_push($allPosts , $toAdd);
         $bottom+= $toAdd->displayPost();
     }
 
