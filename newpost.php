@@ -35,7 +35,8 @@ $body=<<<EOBODY
 		Artist Name : <input type="text" name="artist"/><br /><br />
 		Album Title : <input type="text" name="album"/><br /><br />
 		Link to song: <input type="text" name="song"/><br /><br />
-		Upload image: <input type="file" name="image" id="fileToUpload">
+		Upload image: <input type="file" name="image" id="image" />
+		<br><br>
 		<input type="submit" name="submitPost" value="Enter Post" />
 		<input type="reset" value="Clear Fields"/>
 	</form>
