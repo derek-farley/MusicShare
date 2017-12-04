@@ -75,7 +75,8 @@
           PostsTable::LIKES_FIELD => $this->likes, 
           PostsTable::REPOSTS_FIELD => $this->reposts, 
           PostsTable::OWNER_FIELD => $this->owner, 
-          PostsTable::ALBUMART_FIELD =>$this->image ));
+          PostsTable::ALBUMART_FIELD =>$this->image,
+            PostsTable::URL_FIELD =>$this->song_url,));
 
     }
 
