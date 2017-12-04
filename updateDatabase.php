@@ -9,7 +9,9 @@ dbConfig();
 session_start();
 echo "<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>";
 $user = $_SESSION["userObject"];
-$postid = (int) $_GET["postid"];
+if (isset($_GET["postid"])) {
+    $postid = (int) $_GET["postid"];
+}
 $newValue = (int) $_GET["newValue"];
 echo "updating db";
 switch ($_GET["operation"]) {
@@ -36,8 +38,15 @@ switch ($_GET["operation"]) {
         updatePostsTable($newValue, $postid, false);
         break;
     case "follow" :
+        DB::insert(FollowsTable::TABLE_NAME, array(
+            FollowsTable::FOLLOWS_FIELD => $_GET["newValue"],
+            FollowsTable::FOLLOWED_BY_FIELD => $user->getUsername()
+        ));
         break;
     case "unfollow" :
+        DB::delete(FollowsTable::TABLE_NAME,
+            FollowsTable::FOLLOWED_BY_FIELD." = %s and ".FollowsTable::FOLLOWS_FIELD." = %s",
+            $user->getUsername(), $_GET["newValue"]);
         break;
 }
 

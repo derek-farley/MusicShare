@@ -67,12 +67,40 @@ function changeUnrepostButton(post_id) {
     document.getElementById(post_id + " repostButton").onclick = function() { incrementReposts(this.form)};
 }
 
+function followUser(form) {
+    console.log(form.elements.namedItem("following").value);
+    let followedUser = form.elements.namedItem("following").value;
+    changeFollowButton();
+    updateDatabase(null, "follow", followedUser);
+}
+
+function changeFollowButton() {
+    document.getElementById("following").value = "Unfollow";
+    document.getElementById("following").style.backgroundColor = "PaleVioletRed";
+    document.getElementById("following").onclick = function() { unfollowUser(this.form)};
+}
+
+function unfollowUser(form) {
+    console.log(form.elements.namedItem("following").value);
+    let unfollowedUser = form.elements.namedItem("following").value;
+    changeUnfollowButton();
+    updateDatabase(null, "unfollow", unfollowedUser);
+}
+
+function changeUnfollowButton() {
+    document.getElementById("following").value = "Follow";
+    document.getElementById("following").style.backgroundColor = "#4CAF50";
+    document.getElementById("following").onclick = function() { followUser(this.form)};
+}
+
 function updateDatabase(post_id, operation, newValue) {
     console.log("updating db");
     let requestObj = new XMLHttpRequest();
     let scriptURL = "updateDatabase.php";
 
-    scriptURL += "?postid=" + post_id;
+    if (post_id !== null) {
+        scriptURL += "?postid=" + post_id;
+    }
 
     scriptURL += "&operation=" + operation;
 

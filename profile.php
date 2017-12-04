@@ -31,6 +31,7 @@ else
     $user = $userObject->getUsername();
 }
 ?>
+<script type="text/javascript" src="postScript.js"></script>
 <div class="fixedHeader">
     <div class="col-xs-4 col-md-4">
         <br>
@@ -56,6 +57,12 @@ else
     <div class="col-xs-4 col-md-4">
         <h1 class="headers" align="center"><?php if(!isset($_POST['searchedFriend'])) echo $user; else
                 echo $viewing;?>'s Profile</h1>
+        <form align="center">
+            <input type="hidden" id="following" name="following" value="<?php if(!isset($_POST['searchedFriend'])) echo $user; else
+                echo $viewing;?>"/>
+            <input type="button" name="followButton" value="Follow" id="followButton" class="btn btn-primary button"
+            onclick="followUser(this.form)"/>
+        </form>
     </div>
     <div class="col-xs-4 col-md-4">
         <br>
