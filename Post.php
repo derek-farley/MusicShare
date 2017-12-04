@@ -15,7 +15,7 @@ class Post {
     private $artist; #string
     private $songalbum; #string
     private $image; #string
-    private $id; #int
+    private $post_id; #int
     private $timestamp; # string
     private $isRepost;
     private $reposter;
@@ -130,7 +130,7 @@ EOBODY;
         session_start();
         $post_id = $this->getNextPostId();
         DB::insert(PostsTable::TABLE_NAME, array(
-            PostsTable::POST_ID_FIELD => Post::$id,
+            PostsTable::POST_ID_FIELD => $this->post_id,
             PostsTable::TIMESTAMP_FIELD =>$this->timestamp,
             PostsTable::SONGALBUM_FIELD => $this->songalbum,
             PostsTable::ARTIST_FIELD => $this->artist,
