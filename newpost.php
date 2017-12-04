@@ -11,12 +11,13 @@
 </head>
 <body>
 <?php
-includeConstants();
-dbConfig();
-session_start();
 
 require_once("support.php");
 require_once "meekrodb.2.3.class.php";
+
+includeConstants();
+dbConfig();
+session_start();
 
 $file="";
 
@@ -30,11 +31,11 @@ if(isset($_POST["createPostfromprofile"])){
 $body=<<<EOBODY
 	<h1>Create New Post</h1><br />
 	<div>
-	<form action=$file method="post">
+	<form action=$file method="post" enctype="multipart/form-data">
 		Artist Name : <input type="text" name="artist"/><br /><br />
 		Album Title : <input type="text" name="album"/><br /><br />
 		Link to song: <input type="text" name="song"/><br /><br />
-		Image filepath: <input type="text" name="image"/><br /><br />
+		Upload image: <input type="file" name="image" id="fileToUpload">
 		<input type="submit" name="submitPost" value="Enter Post" />
 		<input type="reset" value="Clear Fields"/>
 	</form>
