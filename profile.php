@@ -42,11 +42,16 @@ else
         <?php
             if (isset($_POST["searchedFriend"])) {
                 echo "<span style='float: left;'><form action='profile.php'>
-                        <input type=\"submit\" name=\"profileButton\" value=\"Profile\" class=\"btn btn-primary button\"/>
+                        <input type=\"submit\" name=\"profileButton\" value=\"Profile\" class=\"btn btn-primary button\"/>&emsp;&emsp;
                         </form>
                         </span>";
             }
         ?>
+        <span style="float: left;">
+            <form action="login.php">
+                <input type="submit" name="logoutButton" value="Logout" class="btn btn-primary button"/>&emsp;&emsp;
+            </form>
+        </span>
     </div>
     <div class="col-xs-4 col-md-4">
         <h1 class="headers" align="center"><?php if(!isset($_POST['searchedFriend'])) echo $user; else

@@ -12,24 +12,26 @@
 </head>
 <body>
 <div class="fixedHeader">
-    <div class="col-xs-3 col-md-3">
+    <div class="col-xs-4 col-md-4">
             <br>
             <form action="profile.php" method="POST">
                 <input type="submit" name="profileButton" value="Profile" class="btn btn-primary button"/>
             </form>
     </div>
-    <div class="col-xs-6 col-md-6">
+    <div class="col-xs-4 col-md-4">
         <h1 class="headers" align="center">MusicShare</h1>
     </div>
-    <div class="col-xs-3 col-md-3">
+    <div class="col-xs-4 col-md-4">
         <br>
         <span style="float:left;">
-            <input type="submit" name="createPost" value="New Post" class="btn btn-primary button"/>
+            <input type="submit" name="createPost" value="New Post" class="btn btn-primary button" align="center"/>
+            &nbsp;&nbsp;&nbsp;
         </span>
-        <span style="float:right;">
+        <span style="float:left;">
             <form action = "profile.php" method="POST" align="center">
             <i class="glyphicon glyphicon-search"></i>
             <input type="text" placeholder="Search..." name="searchBar"/>
+            <input type="submit" name="submitSearch" value="go">
         </form>
         </span>
     </div>
