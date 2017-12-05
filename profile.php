@@ -87,7 +87,7 @@ else
     <div class="col-xs-4 col-md-4">
     <br>
     <span style="float: left;">
-    <form action="newpost.php" method="post">
+    <form action="newpost.html" method="post">
     <input type="submit" name="newPost" value="New Post" class="btn btn-primary button" align="center"/>
             &nbsp;&nbsp;&nbsp;
     </form>

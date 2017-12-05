@@ -113,7 +113,7 @@ class Post {
                 </div>
                 <div class="row">
                     <div class="well">
-                        <strong>Music Link:</strong> <a href=http://$this->song_url target="_blank">$this->song_url</a>
+                        <strong>Music Link:</strong> <a href=$this->song_url target="_blank">$this->song_url</a>
                     </div>
                 </div>
             </div>

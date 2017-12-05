@@ -1,0 +1,17 @@
+#newPost input[name="image"]
+{
+	 display: none;
+}
+
+#photoButton
+{
+	background-color: green;
+	border-radius: 25em;
+	color: black;
+	margin:left 30px;
+}
+#photoButton > p
+{
+	display : inline; 
+	color: black ;
+}
