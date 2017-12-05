@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- scale application to window space available (1 ==> 100%) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="signup/color.css" />
+    <script src="jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="postScript.js"></script>
+
+</head>
+<body>
+<!--     <script>
+        var request;
+        $(document).ready(function () {
+            $("#newPost").submit(function(event) {
+
+            event.preventDefault();
+            if (request) {
+                request.abort();
+            }
+
+        var file_data = $("#image").prop("files")[0];   
+        // var form_data = new FormData();               
+        // form_data.append("file", file_data)             
+        // form_data.append("user_id", 123)                 
+        // $.ajax({
+        //             url: "/upload_avatar",
+        //             dataType: 'script',
+        //             cache: false,
+        //             contentType: false,
+        //             processData: false,
+        //             data: form_data,                        
+        //             type: 'post'
+        //    })
+
+            var $form = $(this);
+
+            // form caching not sure if we need. var $inputs = $form.find("input, select, button, textarea");
+
+                // Serialize the data in the form
+            var serializedData = $form.serialize();
+            alert(serializedData);             
+
+
+            });
+    });
+
+    </script> -->
+
+<!--     <script>
+        function readURL(input) {
+
+          if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+              $('#blah').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+          }
+        }
+        $(document).ready(function () {
+            $("#image").change(function() {
+              readURL(this);
+            });
+         });
+    </script> -->
+<script>
+$("document").ready(function() {
+    $("#newPost").submit(function(event){
+      //disable the default form submission
+      event.preventDefault();
+     
+      //grab all form data  
+      var formData = new FormData($(this)[0]);
+     
+      $.ajax({
+        url: 'processNewPost.php',
+        type: 'POST',
+        data: formData,
+        async: true,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (returndata) {
+
+          console.log(returndata);
+        } ,
+        error:function(exception){console.log('Exception:'+exception);}
+      });
+    });
+});
+</script>
+<div class="fixedHeader">
+    <div class="col-xs-4 col-md-4">
+        <br>
+        <span style="float: left;">
+            <form action="timeline.php" method="POST">
+                <input type="submit" name="newPostToTimeline" value="Timeline" class="btn btn-primary button"/>&emsp;&emsp;
+            </form>
+        </span>
+        <span style="float: left">
+            <form action="profile.php" method="POST">
+            <input type="submit" name="profileButton" value="Profile" class="btn btn-primary button"/>&emsp;&emsp;
+            </form>
+        </span>
+    </div>
+    <div class="col-xs-4 col-md-4">
+        <h1 class="headers" align="center">MusicShare</h1>
+    </div>
+    <div class="col-xs-4 col-md-4">
+    <br>
+            <form action="login.php" align="center">
+                <input type="submit" name="logoutButton" value="Logout" class="btn btn-primary button"/>&emsp;&emsp;
+            </form>
+    </div>
+</div>
+	<h1 align="center" class="headers">Create New Post</h1><br />
+	<div align="center">
+	<form action="timeline.php" method="post" id="newPost" enctype="multipart/form-data">
+		Artist Name : <input type="text" name="artist" id="artist" /><br /><br />
+		Album Title : <input type="text" name="album" id="album" /><br /><br />
+		Link to song: <input type="text" name="song" id="song"/><br /><br />
+		Upload image: <input type="file" name="image" id="image" />
+		<br><br>
+		<input type="submit" name="submitPost" value="Enter Post" />
+		<input type="reset" value="Clear Fields"/>
+	</form>
+	</div>
+	</body>
+    </html>

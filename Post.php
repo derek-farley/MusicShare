@@ -40,7 +40,8 @@ class Post {
         $this->reposts = $reposts;
         $this->likes = $likes;
         if ($timestamp === null) {
-            $this->timestamp = date("h:i:sa");
+            $timestamp=date("Y-m-d H:i:s");
+            $this->timestamp = $timestamp;
         }
         else {
             $this->timestamp = $timestamp;
@@ -55,6 +56,32 @@ class Post {
 
     public function getAlbumArt() {
         return $this->image;
+    }
+
+    public function getTimeStamp() {
+        return $this->timestamp;
+    } 
+    public function getPostID() {
+        return $this->post_id;
+    }
+    public function getReposts() {
+        return $this->reposts;
+    }
+    public function getLikes() {
+        return $this->likes;
+    }
+    public function getOwner() {
+        return $this->owner;
+    }
+    public function getURL() {
+        return $this->song_url;
+    }
+    public function getArtist() {
+        return $this->artist;
+    }
+    public function getAlbumName()
+    {
+        return $this->songalbum;
     }
 
     public function getNextPostId() {
@@ -143,21 +170,6 @@ EOBODY;
         //somehow add post and Reposting user to LikeRepostTable
     }
 
-    public function addPostToDb() {
-        dbConfig();
-        $post_id = $this->getNextPostId();
-        DB::insert(PostsTable::TABLE_NAME, array(
-            PostsTable::POST_ID_FIELD => $this->post_id,
-            PostsTable::TIMESTAMP_FIELD =>$this->timestamp,
-            PostsTable::SONGALBUM_FIELD => $this->songalbum,
-            PostsTable::ARTIST_FIELD => $this->artist,
-            PostsTable::LIKES_FIELD => $this->likes,
-            PostsTable::REPOSTS_FIELD => $this->reposts,
-            PostsTable::OWNER_FIELD => $this->owner,
-            PostsTable::ALBUMART_FIELD =>$this->image,
-            PostsTable::URL_FIELD =>$this->song_url,));
-
-    }
 
     public static function createPost($post_array) {
         return new Post($post_array[PostsTable::OWNER_FIELD], $post_array[PostsTable::ARTIST_FIELD],

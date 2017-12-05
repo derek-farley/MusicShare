@@ -8,6 +8,7 @@
 
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="signup/color.css" />
+    <script src="jquery-3.2.1.js"></script>
     <script type="text/javascript" src="postScript.js"></script>
 </head>
 <body>
@@ -31,10 +32,13 @@
     <div class="col-xs-4 col-md-4">
         <br>
         <span style="float:left;">
-        <form action="newpost.php" method="post">
-            <input type="submit" name="createPostfromtimeline" value="New Post" class="btn btn-primary button" align="center"/>
+            <input type="button" onclick="newpost.html" name="createPostfromtimeline" value="New Post" class="btn btn-primary button" align="center" id="newPostButton" />
             &nbsp;&nbsp;&nbsp;
-        </form>
+            <script type="text/javascript">
+                document.getElementById("newPostButton").onclick = function () {
+        location.href = "newpost.html";
+    };
+</script>
         </span>
         <span style="float:left;">
             <form action = "profile.php" method="POST" align="center">
@@ -54,6 +58,7 @@
         require_once "meekrodb.2.3.class.php";
         require_once "Post.php";
         require_once "User.php";
+        $result = '';
 
         #this is to be the Main Page of the website, once logged in. This should display the user's timeline. Still a draft.
         includeConstants();
@@ -72,42 +77,38 @@
         #print_r($postsArray[0]);
         #print_r($currUser->getReposts());
 
-    if (isset($_POST['submitPost'])){
-        $target_dir = "uploads/";
-    $target_file = $target_dir . basename($_FILES["image"]["name"]);
-    $uploadOk = 1;
-    $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-    // Check if image file is a actual image or fake image
-    if(isset($_POST["submitPost"])) {
-        $check = getimagesize($_FILES["image"]["tmp_name"]);
-        if($check !== false) {
+        if (isset($_POST['newPostToTimeline']))
+        {
+             '<script>alert("calling")</script>';
+            $target_dir = "uploads/";
+            $target_file = $target_dir . basename($_FILES["image"]["name"]);
             $uploadOk = 1;
-        } else {
-            echo "File is not an image.";
-            $uploadOk = 0;
-        }
-    }
-    
-    if (file_exists($target_file)) {
-        echo "Sorry, file already exists.";
-        $uploadOk = 0;
-    }
-     if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-        echo "The file ". basename( $_FILES["image"]["name"]). " has been uploaded.";
-    } else {
-        echo "Sorry, there was an error uploading your file.";
-    }
-$imgloc = $target_file; 
-$image = fopen($imgloc, 'rb'); 
-$imageContent = fread($image, filesize($imgloc));
-$imgur = base64_encode($imageContent);
-        $newpost= new Post($_SESSION['user'],$_POST['artist'],$_POST['album'],$_POST['song'],$imageContent);
-        $newpost->addPostToDb();          
-        if (isset($_POST['submitPost'])){
-            $newpost= new Post($currUser,$_POST['artist'],$_POST['album'],$_POST['song'],$_POST['image']);
-            $newpost.addPosttoDb();
-        }
+            $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+            $check = getimagesize($_FILES["image"]["tmp_name"]);
+            if($check !== false) {
+                $uploadOk = 1;
+            } else {
+                echo "File is not an image.";
+                $uploadOk = 0;
+            }
+        
+            if (file_exists($target_file)) {
+                echo "Sorry, file already exists.";
+                $uploadOk = 0;
+            }
+            if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                echo "Sorry, there was an error uploading your file.";
+            } 
 
+            $imgloc = $target_file; 
+            $image = fopen($imgloc, 'rb'); 
+            $imageContent = fread($image, filesize($imgloc));
+            $imgur = base64_encode($imageContent);
+            //echo $imgur;
+            echo '<img src="data:image/jpeg;base64,'.$imgur.'"/>';
+
+
+        }
         foreach ($currUser->getPosts() as $array) {
             # print_r($array);
             if ($currUser->isRepost($array)) {
@@ -125,7 +126,7 @@ $imgur = base64_encode($imageContent);
             echo "You have no posts to view. Follow some users or make some posts... or both";
         }
         ?>
-
+           
     </div>
     <div class="col-xs-3 col-md-3">
     </div>

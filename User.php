@@ -58,16 +58,16 @@ class User {
         $this->following_array[] = $user;
     }
 
-    public function addPost($postid, $songalbumname, $timestamp, $artistname, $reposts, $likes, $owner, $albumart, $url) {
-        $this->posts_array[] = array(PostsTable::POST_ID_FIELD => $postid,
-            PostsTable::REPOSTS_FIELD => $reposts,
-            PostsTable::LIKES_FIELD => $likes,
-            PostsTable::OWNER_FIELD => $owner,
-            PostsTable::TIMESTAMP_FIELD => $timestamp,
-            PostsTable::URL_FIELD => $url,
-            PostsTable::ALBUMART_FIELD => $albumart,
-            PostsTable::ARTIST_FIELD => $artistname,
-            PostsTable::SONGALBUM_FIELD => $songalbumname);
+    public function addPost($post) {
+    array_push($this->posts_array, array(PostsTable::POST_ID_FIELD => $post->getPostID() ,
+            PostsTable::REPOSTS_FIELD => $post->getReposts(),
+            PostsTable::LIKES_FIELD => $post->getLikes(),
+            PostsTable::OWNER_FIELD => $post->getOwner(),
+            PostsTable::TIMESTAMP_FIELD => $post->getTimeStamp(),
+            PostsTable::URL_FIELD => $post->getURL(),
+            PostsTable::ALBUMART_FIELD => $post->getAlbumArt(),
+            PostsTable::ARTIST_FIELD => $post->getArtist(),
+            PostsTable::SONGALBUM_FIELD => $post->getAlbumName()));
     }
 
     public function addRepost($postid) {
