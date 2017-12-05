@@ -18,6 +18,9 @@
 		foreach(glob($relativepath."Constants/*.php") as $filename) {
 			require_once $filename;
 		}
+		foreach(glob($relativepath."Objects/*.php") as $filename) {
+			require_once $filename;
+		}
 	}
 
 	function generatePage($body, $title="Example") {

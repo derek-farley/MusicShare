@@ -7,14 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="signup/color.css" />
+    <link rel="stylesheet" href="css/color.css" />
 </head>
 <body>
 <?php
-require_once "User.php";
-require_once("support.php");
+require_once "support.php";
 require_once "meekrodb.2.3.class.php";
-require_once "Post.php";
 
 includeConstants();
 dbConfig();
@@ -58,7 +56,7 @@ else
             }
         ?>
         <span style="float: left;">
-            <form action="login.php">
+            <form action="signup_login/login.php">
                 <input type="submit" name="logoutButton" value="Logout" class="btn btn-primary button"/>&emsp;&emsp;
             </form>
         </span>

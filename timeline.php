@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="signup/color.css" />
+    <link rel="stylesheet" href="css/color.css" />
     <script src="jquery-3.2.1.js"></script>
     <script type="text/javascript" src="postScript.js"></script>
 </head>
@@ -21,7 +21,7 @@
             </form>
         </span>
         <span style="float: left;">
-            <form action="login.php">
+            <form action="signup_login/login.php">
                 <input type="submit" name="logoutButton" value="Logout" class="btn btn-primary button"/>&emsp;&emsp;
             </form>
         </span>
@@ -56,8 +56,6 @@
         <?php
         require_once "support.php";
         require_once "meekrodb.2.3.class.php";
-        require_once "Post.php";
-        require_once "User.php";
         $result = '';
 
         #this is to be the Main Page of the website, once logged in. This should display the user's timeline. Still a draft.

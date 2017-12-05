@@ -36,7 +36,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  		<link rel="stylesheet" href="color.css" />
+  		<link rel="stylesheet" href="../css/color.css" />
         </head>
         <body>
 		<script type="text/javascript" src="signup.js"></script>
@@ -45,7 +45,7 @@
             <!-- 12 available Boostrap columns; you need to specify how many -->
             <!-- Boostrap columns a column should span.  For example, col-xs-6 -->
             <!-- indicates a column will span 6 bootstrap columns -->
-            <div class="row"  style="background:transparent url('mu.jpg') no-repeat center center /cover">>
+            <div class="row"  style="background:transparent url('../images/mu.jpg') no-repeat center center /cover">>
                 <div class="col-xs-12 col-md-12 text-center headers">
                     <h2>MusicShare</h2>
 

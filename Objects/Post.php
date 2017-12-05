@@ -1,7 +1,13 @@
 <?php
 declare(strict_types=1);
-require_once "support.php";
-require_once "meekrodb.2.3.class.php";
+if (!defined('CWD')) {
+    define('CWD', getcwd());
+}
+
+require_once CWD."../support.php";
+require_once CWD."../meekrodb.2.3.class.php";
+require_once "User.php";
+
 if (!isset($_SESSION["user"]))
     session_start();
 /**
@@ -32,7 +38,7 @@ class Post {
         $this->songalbum=$songalbum;
         $this->image=base64_encode($image); #base64 encode for displaying in img tag in html later
         if ($post_id === null) {
-          $this->post_id = $this->getNextPostId();
+            $this->post_id = $this->getNextPostId();
         }
         else {
             $this->post_id = $post_id;
@@ -60,7 +66,7 @@ class Post {
 
     public function getTimeStamp() {
         return $this->timestamp;
-    } 
+    }
     public function getPostID() {
         return $this->post_id;
     }
@@ -89,10 +95,10 @@ class Post {
     }
 
     public function displayPost($user) {
-      $repostMessage = "";
-      if ($this->isRepost) {
-        $repostMessage = "&nbsp <i class=\"glyphicon glyphicon-refresh\"></i> by <strong>$this->reposter</strong>";
-      }
+        $repostMessage = "";
+        if ($this->isRepost) {
+            $repostMessage = "&nbsp <i class=\"glyphicon glyphicon-refresh\"></i> by <strong>$this->reposter</strong>";
+        }
         $display= <<<EOBODY
         <br>
       <div class="panel panel-default">
@@ -123,31 +129,31 @@ class Post {
                 <input type="hidden" name="post_id" value="$this->post_id"/>
                     <strong>Likes:</strong> <span id="$this->post_id likes">$this->likes</span> <i class="glyphicon glyphicon-thumbs-up"></i>
 EOBODY;
-      if ($user->likesPost($this->post_id)) {
-          $display = $display."<input type=\"button\" id=\"$this->post_id likeButton\" name=\"like Button\" 
+        if ($user->likesPost($this->post_id)) {
+            $display = $display."<input type=\"button\" id=\"$this->post_id likeButton\" name=\"like Button\" 
                     style='background-color: PaleVioletRed;' value=\"Unlike\" class=\"btn btn-default button\" onclick=\"decrementLikes(this.form);\"/>
                 </form>";
-      }
-      else {
-          $display = $display."<input type=\"button\" id=\"$this->post_id likeButton\" name=\"like Button\" 
+        }
+        else {
+            $display = $display."<input type=\"button\" id=\"$this->post_id likeButton\" name=\"like Button\" 
                             value=\"Like\" class=\"btn btn-default button\" onclick=\"incrementLikes(this.form);\"/>
                             </form>";
-      }
-      $display = $display."<form align=\"center\">
+        }
+        $display = $display."<form align=\"center\">
                     <input type=\"hidden\" name=\"post_id\" value=\"$this->post_id\"/>
                     <strong>Reposts:</strong> <span id=\"$this->post_id reposts\">$this->reposts</span> <i class=\"glyphicon glyphicon-refresh\"></i>";
-      if ($user->didRepost($this->post_id)) {
-          $display = $display."<input type=\"button\" id=\"$this->post_id repostButton\" name=\"repostButton\" value=\"Unrepost\" 
+        if ($user->didRepost($this->post_id)) {
+            $display = $display."<input type=\"button\" id=\"$this->post_id repostButton\" name=\"repostButton\" value=\"Unrepost\" 
                     style='background-color: PaleVioletRed;' class=\"btn btn-default button\" onclick=\"decrementReposts(this.form);\"/>
                 </form>";
-      }
-      else {
-          $display = $display."<input type=\"button\" id=\"$this->post_id repostButton\" name=\"repostButton\" value=\"Repost\" 
+        }
+        else {
+            $display = $display."<input type=\"button\" id=\"$this->post_id repostButton\" name=\"repostButton\" value=\"Repost\" 
                     class=\"btn btn-default button\" onclick=\"incrementReposts(this.form);\"/>
                 </form>";
-      }
+        }
 
-      $bottom = <<<EOBODY
+        $bottom = <<<EOBODY
             </div>
         </div>
         <div class="panel-footer" align="center">
@@ -173,13 +179,13 @@ EOBODY;
 
     public static function createPost($post_array) {
         return new Post($post_array[PostsTable::OWNER_FIELD],
-         $post_array[PostsTable::ARTIST_FIELD],
+            $post_array[PostsTable::ARTIST_FIELD],
             $post_array[PostsTable::SONGALBUM_FIELD],
-             $post_array[PostsTable::URL_FIELD],
-              base64_decode($post_array[PostsTable::ALBUMART_FIELD]),
+            $post_array[PostsTable::URL_FIELD],
+            base64_decode($post_array[PostsTable::ALBUMART_FIELD]),
             (int)$post_array[PostsTable::LIKES_FIELD],
-             (int)$post_array[PostsTable::REPOSTS_FIELD],
-              $post_array[PostsTable::TIMESTAMP_FIELD],
+            (int)$post_array[PostsTable::REPOSTS_FIELD],
+            $post_array[PostsTable::TIMESTAMP_FIELD],
             (int)$post_array[PostsTable::POST_ID_FIELD]);
     }
 

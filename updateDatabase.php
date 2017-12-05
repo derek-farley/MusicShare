@@ -1,16 +1,15 @@
 <?php
-require_once "User.php";
 require_once "meekrodb.2.3.class.php";
 require_once "support.php";
-require_once "Post.php";
 
 
 
 includeConstants();
 dbConfig();
+
 if (!isset($_SESSION['user']))
     session_start();
-echo "<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>";
+
 $user = $_SESSION["userObject"];
 if (isset($_GET["postid"])) {
     $postid = (int) $_GET["postid"];

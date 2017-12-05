@@ -1,7 +1,11 @@
 <?php
 declare(strict_types=1);
-require_once "meekrodb.2.3.class.php";
-require_once "support.php";
+if (!defined('CWD')) {
+    define("CWD", getcwd());
+}
+
+require_once CWD."../support.php";
+require_once CWD."../meekrodb.2.3.class.php";
 require_once "Post.php";
 /**
  * MusicShare user class
@@ -59,7 +63,7 @@ class User {
     }
 
     public function addPost($post) {
-    array_push($this->posts_array, array(PostsTable::POST_ID_FIELD => $post->getPostID() ,
+        array_push($this->posts_array, array(PostsTable::POST_ID_FIELD => $post->getPostID() ,
             PostsTable::REPOSTS_FIELD => $post->getReposts(),
             PostsTable::LIKES_FIELD => $post->getLikes(),
             PostsTable::OWNER_FIELD => $post->getOwner(),
@@ -94,24 +98,24 @@ class User {
     }
 
     public function isRepost($post) : bool {
-      $key = $post[PostsTable::POST_ID_FIELD];
-      return array_key_exists($key, $this->reposts_array);
+        $key = $post[PostsTable::POST_ID_FIELD];
+        return array_key_exists($key, $this->reposts_array);
     }
 
     public function getReposts() : array {
-      return $this->reposts_array;
+        return $this->reposts_array;
     }
 
     public function collectReposts() : array {
-      array_push($this->following_array, $this->username);
-      $results = DB::query("SELECT * from ".LikeRepostTable::TABLE_NAME." where username in %ls and isLike = %d",
-          $this->following_array, 0);
-      array_pop($this->following_array);
-      $returnArray = [];
-      foreach($results as $result) {
-        $returnArray[$result[LikeRepostTable::POST_ID_FIELD]] = $result;
-      }
-      return $returnArray;
+        array_push($this->following_array, $this->username);
+        $results = DB::query("SELECT * from ".LikeRepostTable::TABLE_NAME." where username in %ls and isLike = %d",
+            $this->following_array, 0);
+        array_pop($this->following_array);
+        $returnArray = [];
+        foreach($results as $result) {
+            $returnArray[$result[LikeRepostTable::POST_ID_FIELD]] = $result;
+        }
+        return $returnArray;
     }
 
     public function isFollowing($username) : bool {
