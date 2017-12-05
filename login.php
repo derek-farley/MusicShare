@@ -6,6 +6,11 @@ require_once "meekrodb.2.3.class.php";
 includeConstants();
 dbConfig(); # configure meekrodb for musicshare db
 
+if (isset($_POST["logoutButton"])) {
+    session_start();
+    session_destroy();
+}
+
 $provided_user = "";
 $provided_password = "";
 if (isset($_POST["loginbutton"])) {
@@ -74,7 +79,7 @@ $login = <<<EOBODY
 							<h2><strong>Login </strong></h2><br />
 							<strong>Username: </strong><input type="text" id="username" value="$provided_user" name="username" required/><br><br>
 							<strong>Password: </strong><input type="password" id="pwd" value="$provided_password" name="pwd" required/><br /><br/>
-							<input type="submit" class="btn btn-primary button" value="Login" name="loginbutton" id="loginSubmit"/><br />	
+							<input type="submit" class="btn btn-primary button" value="Login" name="loginbutton" id="loginSubmit" onsubmit="validate()"/><br />	
 						</form>
 					</div>
 				</div>

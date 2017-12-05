@@ -1,11 +1,8 @@
-window.onsubmit=validate;
-
-
 function validate() {
 	var username = document.getElementById("username").value;
     var pwd = document.getElementById("pwd").value;
 
-    var invalidMess = "";
+    var invalidMessages = "";
     if(username.length<5){
     	invalidMess="Incorrect username: not enough characters.";
     }
