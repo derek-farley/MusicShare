@@ -51,11 +51,11 @@ class User {
         return $this->posts_array;
     }
     public function addFollower($user) {
-        $this->follower_array[] = $user;
+        array_push($this->follower_array[], $user);
     }
 
     public function addFollowing($user) {
-        $this->following_array[] = $user;
+        array_push($this->following_array , $user);
     }
 
     public function addPost($post) {

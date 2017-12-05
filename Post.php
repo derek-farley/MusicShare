@@ -2,7 +2,7 @@
 declare(strict_types=1);
 require_once "support.php";
 require_once "meekrodb.2.3.class.php";
-if (!isset($_SESSION))
+if (!isset($_SESSION["user"]))
     session_start();
 /**
  * Object representing posts of shared music by Users
@@ -172,9 +172,14 @@ EOBODY;
 
 
     public static function createPost($post_array) {
-        return new Post($post_array[PostsTable::OWNER_FIELD], $post_array[PostsTable::ARTIST_FIELD],
-            $post_array[PostsTable::SONGALBUM_FIELD], $post_array[PostsTable::URL_FIELD], $post_array[PostsTable::ALBUMART_FIELD],
-            (int)$post_array[PostsTable::LIKES_FIELD], (int)$post_array[PostsTable::REPOSTS_FIELD], $post_array[PostsTable::TIMESTAMP_FIELD],
+        return new Post($post_array[PostsTable::OWNER_FIELD],
+         $post_array[PostsTable::ARTIST_FIELD],
+            $post_array[PostsTable::SONGALBUM_FIELD],
+             $post_array[PostsTable::URL_FIELD],
+              base64_decode($post_array[PostsTable::ALBUMART_FIELD]),
+            (int)$post_array[PostsTable::LIKES_FIELD],
+             (int)$post_array[PostsTable::REPOSTS_FIELD],
+              $post_array[PostsTable::TIMESTAMP_FIELD],
             (int)$post_array[PostsTable::POST_ID_FIELD]);
     }
 

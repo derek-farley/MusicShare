@@ -11,42 +11,30 @@
 </head>
 <body>
 <?php
+require_once "User.php";
 require_once("support.php");
 require_once "meekrodb.2.3.class.php";
 require_once "Post.php";
-require_once "User.php";
+
 
 includeConstants();
 dbConfig();
-session_start(); # initialize session to pull and push variables
-
-
-
-    if (isset($_POST['submitPost'])){
-        $anImage = '';
-        if (isset($_POST['image']))
-        {
-             $anImage = file_get_contents('song.jpg');
-        }
-        else
-        {
-            $anImage = file_get_contents('song.jpg');
-        }
-        var_dump($anImage);
-        $newpost= new Post($_SESSION['user'],$_POST['artist'],$_POST['album'],$_POST['song'],$anImage);
-        $newpost->addPostToDb();    
-}
+if (!isset($_SESSION["user"]))
+    session_start(); # initialize session to pull and push variables
 
 if (isset($_POST['searchedFriend']))
 {
     $viewing = new User($_POST['searchedFriend']);
     $viewing = $viewing->getUsername();
+
 }
 else
 {
     $userObject = $_SESSION["userObject"]; #initialize user so header can be customized
-    $user = $userObject->getUsername();
+    $user = $_SESSION["user"];
+    $currUser = new User($user);
 }
+
 ?>
 <script type="text/javascript" src="postScript.js"></script>
 <div class="fixedHeader">
@@ -92,22 +80,42 @@ else
 
         </form>
     </div>
+    <?php
+    if(!isset($_POST['searchedFriend']))
+    {
+        $divBody = <<<EOT
     <div class="col-xs-4 col-md-4">
-        <br>
-        <span style="float: left;">
-        <form action="newpost.php" method="post">
-            <input type="submit" name="newPost" value="New Post" class="btn btn-primary button" align="center"/>
+    <br>
+    <span style="float: left;">
+    <form action="newpost.php" method="post">
+    <input type="submit" name="newPost" value="New Post" class="btn btn-primary button" align="center"/>
             &nbsp;&nbsp;&nbsp;
-        </form>
-        </span>
-        <span style="float:left;">
-            <form action = "profile.php" method="POST">
-            <i class="glyphicon glyphicon-search"></i>
-            <input type="text" placeholder="Search..." name="searchBar"/>
-            <input type="submit" name="submitSearch" value="go">
-        </form>
-        </span>
+    </form>
+    </span>
+    <span style="float:left;">
+    <form action = "profile.php" method="POST">
+    <i class="glyphicon glyphicon-search"></i>
+    <input type="text" placeholder="Search..." name="searchBar"/>
+    <input type="submit" name="submitSearch" value="go">
+    </form>
+    </span>
     </div>
+EOT;
+    }
+    else
+    {
+        $divBody = <<<EOT
+    <div class="col-xs-4 col-md-4">
+    <br>
+    <span style="float: left;">
+    </span>
+    <span style="float:left;">
+    </span>
+    </div>
+EOT;
+    }
+        echo $divBody;
+    ?>
 </div>
 <div class="container" id="container1">
     <?php
@@ -146,7 +154,7 @@ EOD;
     }
     ?>
 </div>
-<div class="container">
+<div class="container" id="displayPost">
     <div class="col-xs-3 col-md-3">
     </div>
     <div class="col-xs-6 col-md-6 whiteColumn" style="border-radius: 10px">

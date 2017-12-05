@@ -66,7 +66,7 @@
 
 
         # initialize session to pull and push variables
-        if (!isset($_SESSION))
+        if (!isset($_SESSION["user"]))
             session_start();
 
 
@@ -76,36 +76,12 @@
         $_SESSION["userObject"] = $currUser; #make user object accessible in any script
         #print_r($postsArray[0]);
         #print_r($currUser->getReposts());
-
+        $imgur;
         if (isset($_POST['newPostToTimeline']))
         {
-             '<script>alert("calling")</script>';
-            $target_dir = "uploads/";
-            $target_file = $target_dir . basename($_FILES["image"]["name"]);
-            $uploadOk = 1;
-            $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-            $check = getimagesize($_FILES["image"]["tmp_name"]);
-            if($check !== false) {
-                $uploadOk = 1;
-            } else {
-                echo "File is not an image.";
-                $uploadOk = 0;
-            }
-        
-            if (file_exists($target_file)) {
-                echo "Sorry, file already exists.";
-                $uploadOk = 0;
-            }
-            if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-                echo "Sorry, there was an error uploading your file.";
-            } 
+            if (isset($_SESSION['nine']))
+                $imgur = $_SESSION['nine'];
 
-            $imgloc = $target_file; 
-            $image = fopen($imgloc, 'rb'); 
-            $imageContent = fread($image, filesize($imgloc));
-            $imgur = base64_encode($imageContent);
-            //echo $imgur;
-            echo '<img src="data:image/jpeg;base64,'.$imgur.'"/>';
 
 
         }

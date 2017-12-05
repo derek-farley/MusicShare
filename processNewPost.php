@@ -6,7 +6,7 @@ require_once "Post.php";
 
 includeConstants();
 dbConfig();
-if(!isset($_SESSION))
+if (!isset($_SESSION['user']))
     session_start();
 
 if (isset($_POST['artist']))
@@ -37,9 +37,8 @@ if (isset($_POST['artist']))
             $imgloc = $target_file; 
             $image = fopen($imgloc, 'rb'); 
             $imageContent = fread($image, filesize($imgloc));
-            $imgur = base64_encode($imageContent);
             //echo '<img src="data:image/jpeg;base64,'.$imgur.'"/>';
-
+            $_SESSION['nine'] = $imageContent;
     if (isset($_SESSION["userObject"]))
         $user = $_SESSION['userObject'];
     $post = new Post($user->getUserName() , $artist, $album , $song , $imageContent);

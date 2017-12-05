@@ -5,7 +5,8 @@
 
     includeConstants();
     dbConfig();
-    session_start(); # initialize session to pull and push variables
+    if (!isset($_SESSION["user"]))
+        session_start(); # initialize session to pull and push variables
 
     $user=$_SESSION["user"];
 
