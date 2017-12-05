@@ -165,10 +165,9 @@ EOD;
         <?php
         if (isset($_POST['searchedFriend']))
         {
-            $userposts = DB::query("SELECT * FROM ".PostsTable::TABLE_NAME . " where " . PostsTable::OWNER_FIELD . " = %s",
-                $viewing);
+            $userposts = getUserProfilePosts($viewing);
             if (count($userposts) === 0) {
-                $exist = DB::query("SELECT * FROM ".UserTable::TABLE_NAME." where ".UserTable::USERNAME_FIELD." = %s",
+                $exist = DB::query("SELECT * FROM ".UserTable::TABLE_NAME." where ".UserTable::USERNAME_FIELD." = %s order by ". PostsTable::TIMESTAMP_FIELD. " DESC",
                     $viewing);
                 if (count($exist) === 0) {
                     echo "This user does not exist. Please verify username and try again";
@@ -180,8 +179,7 @@ EOD;
         }
         else
         {
-            $userposts = DB::query("SELECT * FROM ".PostsTable::TABLE_NAME . " where " . PostsTable::OWNER_FIELD . " = %s",
-                $user);
+            $userposts = getUserProfilePosts($user);
             if (count($userposts) === 0) {
                 echo "You haven't made any posts. Feel free to make some";
             }
@@ -192,6 +190,10 @@ EOD;
             echo $post->displayPost($_SESSION["userObject"]);
         }
 
+        function getUserProfilePosts($username) {
+            return DB::query("SELECT * FROM ".PostsTable::TABLE_NAME . " where " . PostsTable::OWNER_FIELD . " = %s order by ". PostsTable::TIMESTAMP_FIELD. " DESC",
+                $username);
+        }
         ?>
     </div>
     <div class="col-xs-3 col-md-3">
