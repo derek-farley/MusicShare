@@ -1,17 +1,18 @@
 <?php
     require_once("support.php");
     require_once "meekrodb.2.3.class.php";
-
+    require_once "Post.php";
 
     includeConstants();
     dbConfig();
     session_start(); # initialize session to pull and push variables
 
+
     $user="pkarki1";
     $reposts_ids=DB::query("SELECT post_id FROM likerepost WHERE username='".$user."' AND isLike=0");
     //$ids = join("','",$reposts_ids);   
     $userposts=DB::query("SELECT * FROM posts WHERE owner='".$user."'");
-
+    var_dump($userposts);
     $allPosts = [];
 
 

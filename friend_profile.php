@@ -7,11 +7,19 @@
     dbConfig();
     session_start(); # initialize session to pull and push variables
 
-    $user=$_SESSION["user"];
+    if (isset($_POST['submit']))
+    {
+        if (isset($_POST['queried_friend']))
+        {
+            $friend = $_POST['queried_friend'];
+            var_dump($friend);
+        }
+    }
 
-    $reposts_ids=DB::query("SELECT post_id from likerepost where username= '%s' and isLike=0",$user);
-    $ids = join("','",$reposts_ids);   
-    $userposts=DB::query("SELECT * from posts where owner= '%s' or post_id in ('$ids')",$user);
+    $user="pkarki1";
+    $reposts_ids=DB::query("SELECT post_id FROM likerepost WHERE username='".$user."' AND isLike=0");
+    //$ids = join("','",$reposts_ids);   
+    $userposts=DB::query("SELECT * FROM posts WHERE owner='".$user."'");
 
     $allPosts = [];
 
