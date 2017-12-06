@@ -188,7 +188,7 @@ EOBODY;
 
     public static function createRepost($post_array) {
         return new Post($post_array[PostsTable::OWNER_FIELD], $post_array[PostsTable::ARTIST_FIELD],
-            $post_array[PostsTable::SONGALBUM_FIELD], $post_array[PostsTable::URL_FIELD], $post_array[PostsTable::ALBUMART_FIELD],
+            $post_array[PostsTable::SONGALBUM_FIELD], $post_array[PostsTable::URL_FIELD], base64_decode($post_array[PostsTable::ALBUMART_FIELD]),
             (int)$post_array[PostsTable::LIKES_FIELD], (int)$post_array[PostsTable::REPOSTS_FIELD], $post_array[PostsTable::TIMESTAMP_FIELD],
             (int)$post_array[PostsTable::POST_ID_FIELD][LikeRepostTable::POST_ID_FIELD], true,
             $post_array[PostsTable::POST_ID_FIELD][LikeRepostTable::USERNAME_FIELD]);
