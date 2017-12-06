@@ -1,11 +1,8 @@
 <?php
 declare(strict_types=1);
-if (!defined('CWD')) {
-    define('CWD', getcwd());
-}
 
-require_once CWD."../support.php";
-require_once CWD."../meekrodb.2.3.class.php";
+require_once __DIR__."/../support.php";
+require_once __DIR__."/../meekrodb.2.3.class.php";
 require_once "User.php";
 
 if (!isset($_SESSION["user"]))
